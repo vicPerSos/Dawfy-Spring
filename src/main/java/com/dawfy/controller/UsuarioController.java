@@ -1,5 +1,6 @@
 package com.dawfy.controller;
 
+import com.dawfy.controller.requestBody.UsuarioRequestBody;
 import com.dawfy.persistence.entities.Usuario;
 import com.dawfy.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,22 +8,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/usuario")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
+    @GetMapping("/usuarios")
     public ResponseEntity<List<Usuario>> usuarios() {
         return ResponseEntity.ok(this.usuarioService.finAll());
     }
 
     @GetMapping("/{idUsuario}")
-    public ResponseEntity<Optional<Usuario>> usuario(@RequestParam int idUsuario) {
+    public ResponseEntity<Optional<Usuario>> usuario(@PathVariable int idUsuario) {
         Optional<Usuario> usuario = this.usuarioService.findById(idUsuario);
         if (usuario.isPresent()) {
             return ResponseEntity.ok(usuario);
@@ -32,7 +36,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/fecha/{idUsuario}")
-    public ResponseEntity<String> fechaNacimiento(@RequestParam int idUsuario) {
+    public ResponseEntity<String> fechaNacimiento(@PathVariable int idUsuario) {
         Optional<Usuario> usuario = this.usuarioService.findById(idUsuario);
         if (usuario.isPresent()) {
             if (usuario.get().getFechaNacimiento() != null) {
@@ -42,8 +46,37 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/cumple/{dia}")
+    public ResponseEntity<List<Usuario>> cumple(@PathVariable String dia) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate fecha = LocalDate.parse(dia, formatter);
+            return ResponseEntity.ok(this.usuarioService.usuarioPorCumple(fecha));
+        } catch (DateTimeParseException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/pais/{pais}")
+    public ResponseEntity<List<Usuario>> usuarioPorPais(@PathVariable String pais) {
+        if (pais.length() != 2) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(this.usuarioService.usuariosPorPais(pais.toUpperCase()));
+    }
+
+    @GetMapping("paisDe/{idUsuario}")
+    public ResponseEntity<String> paisDeUsuario(@PathVariable int idUsuario) {
+        String respuesta = this.usuarioService.paisDeUsuario(idUsuario);
+        if (respuesta == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(respuesta);
+    }
+
     @GetMapping("/correo/{idUsuario}")
-    public ResponseEntity<String> correoDeUsuario(@RequestParam int idUsuario) {
+    public ResponseEntity<String> correoDeUsuario(@PathVariable int idUsuario) {
         Optional<Usuario> usuario = this.usuarioService.findById(idUsuario);
         if (usuario.isPresent()) {
             if (usuario.get().getCorreo() != null) {
@@ -54,7 +87,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/correoDe/{correo}")
-    public ResponseEntity<Usuario> correoDe(@RequestParam String correo) {
+    public ResponseEntity<Usuario> correoDe(@PathVariable String correo) {
         Optional<Usuario> usuario = this.usuarioService.usuarioPorCorreo(correo);
         if (usuario.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -63,22 +96,33 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> crear(@RequestParam Usuario usuario) {
-        return new ResponseEntity<Usuario>(this.usuarioService.create(usuario), HttpStatus.CREATED);
+    public ResponseEntity<Usuario> crear(@RequestBody UsuarioRequestBody usuario) {
+        Usuario respuesta = new Usuario();
+        respuesta.setNombre(usuario.getNombre());
+        respuesta.setCorreo(usuario.getCorreo());
+        respuesta.setPais(usuario.getPais());
+        respuesta.setFechaNacimiento(usuario.getFechaNacimiento());
+
+        Usuario usuarioCreado = this.usuarioService.create(respuesta);
+        return new ResponseEntity<Usuario>(this.usuarioService.create(usuarioCreado), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Usuario> actualizar(@PathVariable int idUsuario, @RequestParam Usuario usuario) {
+    @PutMapping("/{idUsuario}")
+    public ResponseEntity<Usuario> actualizar(@PathVariable int idUsuario, @RequestBody UsuarioRequestBody usuario) {
         if (!this.usuarioService.exists(idUsuario)) {
             return ResponseEntity.notFound().build();
         }
-        if (usuario.getId() != idUsuario) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(this.usuarioService.save(usuario));
+        Usuario actualizable = this.usuarioService.findById(idUsuario).get();
+
+        actualizable.setNombre(usuario.getNombre());
+        actualizable.setCorreo(usuario.getCorreo());
+        actualizable.setPais(usuario.getPais());
+        actualizable.setFechaNacimiento(usuario.getFechaNacimiento());
+
+        return ResponseEntity.ok(this.usuarioService.save(actualizable));
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{idUsuario}")
     public ResponseEntity<Usuario> borrar(int idUsuario) {
         if (this.usuarioService.delete(idUsuario)) {
             return ResponseEntity.ok().build();

@@ -11,4 +11,5 @@ public interface UsuarioCrudRepository extends CrudRepository<Usuario,Integer> {
     List<Usuario> findByPais(String pais);
     Optional<Usuario> findByCorreo(String correo);
     List<Usuario> findByFechaNacimiento(LocalDate fechaNacimiento);
+
 }

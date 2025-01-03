@@ -50,6 +50,19 @@ public class UsuarioService {
         return this.usuarioCrudRepository.findByPais(pais);
     }
 
+    public String paisDeUsuario(int idUsuario) {
+        try {
+            Optional<Usuario> usuario = this.usuarioCrudRepository.findById(idUsuario);
+            if (usuario.isEmpty()) {
+                throw new Exception("No existe el usuario");
+            }
+            return usuario.get().getPais();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Optional<Usuario> usuarioPorCorreo(String correo) {
         return this.usuarioCrudRepository.findByCorreo(correo);
     }
