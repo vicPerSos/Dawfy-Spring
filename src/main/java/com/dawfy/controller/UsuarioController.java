@@ -22,7 +22,7 @@ public class UsuarioController {
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<Usuario>> usuarios() {
-        return ResponseEntity.ok(this.usuarioService.finAll());
+        return ResponseEntity.ok(this.usuarioService.findAll());
     }
 
     @GetMapping("/{idUsuario}")
@@ -87,7 +87,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/correoDe/{correo}")
-    public ResponseEntity<Usuario> correoDe(@PathVariable String correo) {
+    public ResponseEntity<
+    Usuario> correoDe(@PathVariable String correo) {
         Optional<Usuario> usuario = this.usuarioService.usuarioPorCorreo(correo);
         if (usuario.isEmpty()) {
             return ResponseEntity.notFound().build();

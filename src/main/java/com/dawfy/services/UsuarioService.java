@@ -14,7 +14,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioCrudRepository usuarioCrudRepository;
 
-    public List<Usuario> finAll() {
+    public List<Usuario> findAll() {
         return (List<Usuario>) this.usuarioCrudRepository.findAll();
     }
 
