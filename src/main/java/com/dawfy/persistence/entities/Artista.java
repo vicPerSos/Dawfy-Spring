@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "Artista")
 public class Artista extends Usuario {
+    @JsonIgnore
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Album> albums;
 }

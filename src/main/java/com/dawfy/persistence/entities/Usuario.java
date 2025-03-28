@@ -22,7 +22,10 @@ public class Usuario {
     private String correo;
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
-    private String pais;
+
+    @ManyToOne
+    @JoinColumn(name = "pais")
+    private Pais pais;
 
 
 }

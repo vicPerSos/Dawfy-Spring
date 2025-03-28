@@ -1,13 +1,13 @@
 package com.dawfy.persistence.entities;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class Album {
     @Column(name = "fechalanzamiento")
     private LocalDate fechaLanzamiento;
 
-    @ManyToOne()
+    @ManyToOne
+    @JoinColumn(name = "artista") // Especificar la columna de clave foránea
     private Artista artista;
-
 }

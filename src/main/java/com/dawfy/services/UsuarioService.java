@@ -1,13 +1,14 @@
 package com.dawfy.services;
 
-import com.dawfy.persistence.entities.Usuario;
-import com.dawfy.persistence.repositories.UsuarioCrudRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dawfy.persistence.entities.Usuario;
+import com.dawfy.persistence.repositories.UsuarioCrudRepository;
 
 @Service
 public class UsuarioService {
@@ -46,8 +47,8 @@ public class UsuarioService {
         return false;
     }
 
-    public List<Usuario> usuariosPorPais(String pais) {
-        return this.usuarioCrudRepository.findByPais(pais);
+    public List<Usuario> usuariosPorPais(String nombre) {
+        return this.usuarioCrudRepository.findByPais(nombre);
     }
 
     public String paisDeUsuario(int idUsuario) {
@@ -56,7 +57,7 @@ public class UsuarioService {
             if (usuario.isEmpty()) {
                 throw new Exception("No existe el usuario");
             }
-            return usuario.get().getPais();
+            return usuario.get().getPais().getNombre();
 
         } catch (Exception e) {
             return null;
