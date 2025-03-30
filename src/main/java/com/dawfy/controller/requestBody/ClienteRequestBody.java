@@ -2,11 +2,10 @@ package com.dawfy.controller.requestBody;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
-public class UsuarioRequestBody {
+public class ClienteRequestBody {
     private int id;
     private String nombre;
     private String correo;

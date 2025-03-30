@@ -141,6 +141,10 @@ public class UsuarioController {
         if (!this.usuarioService.exists(idUsuario)) {
             return ResponseEntity.notFound().build();
         }
+        if (!(usuario.getId() == idUsuario)) {
+            return ResponseEntity.badRequest().build();
+
+        }
         Usuario actualizable = this.usuarioService.findById(idUsuario).get();
 
         actualizable.setNombre(usuario.getNombre());

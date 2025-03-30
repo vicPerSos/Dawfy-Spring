@@ -15,10 +15,27 @@ public class ClienteService {
     private ClienteCrudRepository clienteCrudRepository;
 
     public List<Cliente> getAllClientes() {
-        return (List<Cliente>)this.clienteCrudRepository.findAll();
+        return (List<Cliente>) this.clienteCrudRepository.findAll();
     }
-     public Optional<Cliente> getClienteById(int id) {
+
+    public Optional<Cliente> getClienteById(int id) {
         return this.clienteCrudRepository.findById(id);
-     }
+    }
+
+    public void saveCliente(Cliente cliente) {
+        this.clienteCrudRepository.save(cliente);
+    }
+
+    public boolean deleteCliente(int id) {
+        if (!this.clienteCrudRepository.existsById(id)) {
+            return false;
+        }
+        this.clienteCrudRepository.deleteById(id);
+        return true;
+    }
+
+    public boolean existsById(int id) {
+        return this.clienteCrudRepository.existsById(id);
+    }
 
 }
