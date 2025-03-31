@@ -9,10 +9,12 @@ public class ClienteDTOMapper {
             return null;
         }
         ClienteDTO clienteDto = new ClienteDTO();
+        clienteDto.setId(cliente.getId());
         clienteDto.setNombre(cliente.getNombre());
         clienteDto.setCorreo(cliente.getCorreo());
         clienteDto.setFechaNacimiento(cliente.getFechaNacimiento());
         clienteDto.setPais(cliente.getPais().getNombre());
+        clienteDto.setFoto(cliente.getFoto());
 
         return clienteDto;
     }

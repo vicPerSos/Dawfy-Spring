@@ -42,7 +42,6 @@ public class UsuarioController {
         for (Usuario usuario : usuarios) {
             usuariosDTO.add(UsuarioDtoMapper.mapper(usuario));
         }
-        
         return ResponseEntity.ok(usuariosDTO);
     }
 
@@ -53,7 +52,6 @@ public class UsuarioController {
             return ResponseEntity.ok(UsuarioDtoMapper.mapper(usuario.get()));
         }
         return ResponseEntity.notFound().build();
-
     }
 
     @GetMapping("/fecha/{idUsuario}")
@@ -133,6 +131,9 @@ public class UsuarioController {
         respuesta.setCorreo(usuario.getCorreo());
         respuesta.setPais(this.paisService.findById(usuario.getPais()));
         respuesta.setFechaNacimiento(usuario.getFechaNacimiento());
+        if (usuario.getFoto() != null) {
+            respuesta.setFoto(usuario.getFoto());
+        }
         return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.create(respuesta)));
     }
 
@@ -151,6 +152,9 @@ public class UsuarioController {
         actualizable.setCorreo(usuario.getCorreo());
         actualizable.setPais(this.paisService.findById(usuario.getPais()));
         actualizable.setFechaNacimiento(usuario.getFechaNacimiento());
+        if (usuario.getFoto() != null) {
+            actualizable.setFoto(usuario.getFoto());
+        }
 
         return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.save(actualizable)));
     }

@@ -12,5 +12,6 @@ public class ClienteRequestBody {
 
     private LocalDate fechaNacimiento;
     private String pais;
+    private String foto;
 
 }

@@ -19,7 +19,7 @@ public class ArtistaController {
     @Autowired
     private ArtistaService artistaService;
 
-    @GetMapping("/artistas")
+    @GetMapping
     public ResponseEntity<List<Artista>> getArtistas() {
         return ResponseEntity.ok(this.artistaService.getAllArtistas());
     }
@@ -30,7 +30,6 @@ public class ArtistaController {
         if(result.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        
         return ResponseEntity.ok(result);
     }
 }

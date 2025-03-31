@@ -27,5 +27,8 @@ public class Usuario {
     @JoinColumn(name = "pais")
     private Pais pais;
 
+    @Column(columnDefinition = "TEXT")
+    private String foto;
+
 
 }

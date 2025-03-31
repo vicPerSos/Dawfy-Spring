@@ -1,14 +1,13 @@
 package com.dawfy.services;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dawfy.persistence.repositories.ArtistaCrudRepository;
 import com.dawfy.persistence.entities.Artista;
-import com.dawfy.persistence.entities.Usuario;
-
-import java.util.List;
-import java.util.Optional;
+import com.dawfy.persistence.repositories.ArtistaCrudRepository;
 
 @Service
 public class ArtistaService {
@@ -45,5 +44,4 @@ public class ArtistaService {
         }
         return false;
     }
-    
 }

@@ -1,15 +1,18 @@
-package com.dawfy.controller.requestBody;
+package com.dawfy.services.DTOs;
 
 import java.time.LocalDate;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-public class UsuarioRequestBody {
+@Getter
+@Setter
+@NoArgsConstructor
+public class ArtistaDTO {
     private int id;
     private String nombre;
     private String correo;
-
     private LocalDate fechaNacimiento;
     private String pais;
     private String foto;

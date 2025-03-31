@@ -49,7 +49,6 @@ public class ClienteController {
         return ResponseEntity.ok(ClienteDTOMapper.mapper(result.get()));
     }
 
-    // TODO :Probar CRUDS de crear, actualizar y eliminar
     @PutMapping("/{id}")
     public ResponseEntity<ClienteDTO> actualizarCliente(@PathVariable int id, @RequestBody ClienteRequestBody cliente) {
         if (!this.clienteService.existsById(id)) {
@@ -64,17 +63,23 @@ public class ClienteController {
         clienteNuevo.setCorreo(cliente.getCorreo());
         clienteNuevo.setFechaNacimiento(cliente.getFechaNacimiento());
         clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
+        if (cliente.getFoto() != null) {
+            clienteNuevo.setFoto(cliente.getFoto());
+        }
         this.clienteService.saveCliente(clienteNuevo);
         return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
     }
 
-    @PostMapping("path")
+    @PostMapping
     public ResponseEntity<ClienteDTO> crearCliente(@RequestBody ClienteRequestBody cliente) {
         Cliente clienteNuevo = new Cliente();
         clienteNuevo.setNombre(cliente.getNombre());
         clienteNuevo.setCorreo(cliente.getCorreo());
         clienteNuevo.setFechaNacimiento(cliente.getFechaNacimiento());
         clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
+        if (cliente.getFoto() != null) {
+            clienteNuevo.setFoto(cliente.getFoto());
+        }
         this.clienteService.saveCliente(clienteNuevo);
         return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
 

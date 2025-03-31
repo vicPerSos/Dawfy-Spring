@@ -10,8 +10,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ClienteDTO {
+    private int id;
     private String nombre;
     private String correo;
     private LocalDate fechaNacimiento;
     private String pais;
+    private String foto;
 }
