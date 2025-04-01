@@ -21,11 +21,16 @@ public class ArtistaService {
     public Optional<Artista> getArtistaById(int id) {
         return this.artistaCrudRepository.findById(id);
     }
+
+    public List<Artista> getArtistasByNombre(String nombre) {
+        return this.artistaCrudRepository.findByNombreStartingWith(nombre);
+    }
+
     public Artista createArtista(Artista artista) {
         return this.artistaCrudRepository.save(artista);
     }
 
-    public Artista updateArtista(int id, Artista artista) {
+    public Artista updateArtista(Artista artista) {
         return this.artistaCrudRepository.save(artista);
     }
 

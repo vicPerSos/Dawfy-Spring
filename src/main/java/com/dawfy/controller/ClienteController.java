@@ -1,5 +1,8 @@
 package com.dawfy.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -9,24 +12,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawfy.controller.requestBody.ClienteRequestBody;
+import com.dawfy.controller.requestBody.cliente.ClienteRequestBodyPOST;
+import com.dawfy.controller.requestBody.cliente.ClienteRequestBodyPUT;
 import com.dawfy.persistence.entities.Cliente;
 import com.dawfy.services.ClienteService;
 import com.dawfy.services.PaisService;
 import com.dawfy.services.DTOs.ClienteDTO;
 import com.dawfy.services.Mappers.ClienteDTOMapper;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
     @Autowired
     private ClienteService clienteService;
+
     @Autowired
     private PaisService paisService;
 
@@ -49,9 +54,96 @@ public class ClienteController {
         return ResponseEntity.ok(ClienteDTOMapper.mapper(result.get()));
     }
 
+    @GetMapping("/fecha/{idCliente}")
+    public ResponseEntity<String> fechaNacimiento(@PathVariable int idCliente) {
+        Optional<Cliente> cliente = this.clienteService.getClienteById(idCliente);
+        if (cliente.isPresent()) {
+            if (cliente.get().getFechaNacimiento() != null) {
+                return ResponseEntity.ok(cliente.get().getFechaNacimiento().toString());
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/cumple/{dia}")
+    public ResponseEntity<String> cumple(@PathVariable String dia) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate fecha = LocalDate.parse(dia, formatter);
+            List<Cliente> clientes = this.clienteService.clientePorCumle(fecha);
+            List<ClienteDTO> clientesDTO = new ArrayList<>();
+            for (Cliente cliente : clientes) {
+                clientesDTO.add(ClienteDTOMapper.mapper(cliente));
+            }
+            return ResponseEntity.ok(clientesDTO.toString());
+        } catch (DateTimeParseException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/pais/{pais}")
+    public ResponseEntity<List<ClienteDTO>> clientePorPais(@PathVariable String pais) {
+        if (pais.length() != 2) {
+            return ResponseEntity.badRequest().build();
+        }
+        List<Cliente> clientes = this.clienteService.clientePorPais(pais.toUpperCase());
+        List<ClienteDTO> clientesDTO = new ArrayList<>();
+        for (Cliente cliente : clientes) {
+            clientesDTO.add(ClienteDTOMapper.mapper(cliente));
+        }
+        return ResponseEntity.ok(clientesDTO);
+
+    }
+
+    @GetMapping("/paisDe/{idCliente}")
+    public ResponseEntity<String> paisDe(@PathVariable int idCliente) {
+        String respuesta = this.clienteService.paisDeCliente(idCliente);
+        if (respuesta == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @GetMapping("/correo/{idCliente}")
+    public ResponseEntity<String> getCorreo(@PathVariable int idCliente) {
+        Optional<Cliente> cliente = this.clienteService.getClienteById(idCliente);
+        if (cliente.isPresent()) {
+            if (cliente.get().getCorreo() != null) {
+                return ResponseEntity.ok(cliente.get().getCorreo());
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/correoDe/{correo}")
+    public ResponseEntity<ClienteDTO> correoDe(@PathVariable String correo) {
+        Optional<Cliente> cliente = this.clienteService.clientePorCorreo(correo);
+        if (cliente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ClienteDTOMapper.mapper(cliente.get()));
+    }
+
+    @PostMapping
+    public ResponseEntity<ClienteDTO> crearCliente(@RequestBody ClienteRequestBodyPOST cliente) {
+        Cliente clienteNuevo = new Cliente();
+        clienteNuevo.setNombre(cliente.getNombre());
+        clienteNuevo.setCorreo(cliente.getCorreo());
+        clienteNuevo.setFechaNacimiento(cliente.getFechaNacimiento());
+        clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
+        if (cliente.getFoto() != null) {
+            clienteNuevo.setFoto(cliente.getFoto());
+        }
+        this.clienteService.saveCliente(clienteNuevo);
+        return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
+
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDTO> actualizarCliente(@PathVariable int id, @RequestBody ClienteRequestBody cliente) {
-        if (!this.clienteService.existsById(id)) {
+    public ResponseEntity<ClienteDTO> actualizarCliente(@PathVariable int id,
+            @RequestBody ClienteRequestBodyPUT cliente) {
+        if (!this.clienteService.existsCliente(id)) {
             return ResponseEntity.notFound().build();
         }
         if (cliente.getId() != id) {
@@ -66,23 +158,8 @@ public class ClienteController {
         if (cliente.getFoto() != null) {
             clienteNuevo.setFoto(cliente.getFoto());
         }
-        this.clienteService.saveCliente(clienteNuevo);
+        this.clienteService.updateCliente(clienteNuevo);
         return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
-    }
-
-    @PostMapping
-    public ResponseEntity<ClienteDTO> crearCliente(@RequestBody ClienteRequestBody cliente) {
-        Cliente clienteNuevo = new Cliente();
-        clienteNuevo.setNombre(cliente.getNombre());
-        clienteNuevo.setCorreo(cliente.getCorreo());
-        clienteNuevo.setFechaNacimiento(cliente.getFechaNacimiento());
-        clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
-        if (cliente.getFoto() != null) {
-            clienteNuevo.setFoto(cliente.getFoto());
-        }
-        this.clienteService.saveCliente(clienteNuevo);
-        return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
-
     }
 
     @DeleteMapping("/{idCliente}")

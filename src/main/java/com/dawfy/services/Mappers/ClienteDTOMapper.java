@@ -15,7 +15,6 @@ public class ClienteDTOMapper {
         clienteDto.setFechaNacimiento(cliente.getFechaNacimiento());
         clienteDto.setPais(cliente.getPais().getNombre());
         clienteDto.setFoto(cliente.getFoto());
-
         return clienteDto;
     }
 

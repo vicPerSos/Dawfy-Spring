@@ -9,12 +9,12 @@ public class ArtistaDTOMapper {
             return null;
         }
         ArtistaDTO artistaDto = new ArtistaDTO();
+        artistaDto.setId(artista.getId());
         artistaDto.setNombre(artista.getNombre());
         artistaDto.setCorreo(artista.getCorreo());
         artistaDto.setFechaNacimiento(artista.getFechaNacimiento());
         artistaDto.setPais(artista.getPais().getNombre());
-
-
+        artistaDto.setFoto(artista.getFoto());
         return artistaDto;
     }
 

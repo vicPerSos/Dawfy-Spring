@@ -1,5 +1,6 @@
 package com.dawfy.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,14 @@ public class ClienteService {
         this.clienteCrudRepository.save(cliente);
     }
 
+    public void updateCliente(Cliente cliente) {
+        this.clienteCrudRepository.save(cliente);
+    }
+
+    public boolean existsCliente(int id) {
+        return this.clienteCrudRepository.existsById(id);
+    }
+
     public boolean deleteCliente(int id) {
         if (!this.clienteCrudRepository.existsById(id)) {
             return false;
@@ -34,8 +43,36 @@ public class ClienteService {
         return true;
     }
 
-    public boolean existsById(int id) {
-        return this.clienteCrudRepository.existsById(id);
+    public List<Cliente> clientePorPais(String nombre) {
+        return this.clienteCrudRepository.findByPais(nombre);
     }
 
+    public String paisDeCliente(int idCliente) {
+        try {
+            Optional<Cliente> cliente = this.clienteCrudRepository.findById(idCliente);
+            if (cliente.isEmpty()) {
+                throw new Exception("No existe el cliente");
+            }
+            return cliente.get().getPais().getNombre();
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Optional<Cliente> clientePorCorreo(String correo) {
+        return this.clienteCrudRepository.findByCorreo(correo);
+    }
+
+    public List<Cliente> clientePorCumle(LocalDate fechaNacimiento) {
+        return this.clienteCrudRepository.findByFechaNacimiento(fechaNacimiento);
+    }
+
+    public String correoCliente(int id) {
+        return this.clienteCrudRepository.findById(id).get().getCorreo();
+    }
+
+    public LocalDate fechaCliente(int id) {
+        return this.clienteCrudRepository.findById(id).get().getFechaNacimiento();
+    }
 }

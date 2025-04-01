@@ -15,36 +15,32 @@ public class UsuarioService {
     @Autowired
     private UsuarioCrudRepository usuarioCrudRepository;
 
-    public List<Usuario> findAll() {
+    public List<Usuario> getAllUsuarios() {
         return (List<Usuario>) this.usuarioCrudRepository.findAll();
     }
 
-    public Optional<Usuario> findById(int id) {
+    public Optional<Usuario> getUsuarioById(int id) {
         return this.usuarioCrudRepository.findById(id);
     }
 
-    public Usuario create(Usuario usuario) {
+    public Usuario saveUsuario(Usuario usuario) {
         return this.usuarioCrudRepository.save(usuario);
     }
 
-    public Usuario update(int id, Usuario usuario) {
+    public Usuario updateUsuario(Usuario usuario) {
         return this.usuarioCrudRepository.save(usuario);
     }
 
-    public boolean exists(int id) {
+    public boolean existsUsuario(int id) {
         return this.usuarioCrudRepository.existsById(id);
     }
 
-    public Usuario save(Usuario usuario) {
-        return this.usuarioCrudRepository.save(usuario);
-    }
-
-    public boolean delete(int id) {
-        if (this.usuarioCrudRepository.existsById(id)) {
-            this.usuarioCrudRepository.deleteById(id);
-            return true;
+    public boolean deleteUsuario(int id) {
+        if (!this.usuarioCrudRepository.existsById(id)) {
+            return false;
         }
-        return false;
+        this.usuarioCrudRepository.deleteById(id);
+        return true;
     }
 
     public List<Usuario> usuariosPorPais(String nombre) {
@@ -78,12 +74,5 @@ public class UsuarioService {
 
     public LocalDate fechaUsuario(int id) {
         return this.usuarioCrudRepository.findById(id).get().getFechaNacimiento();
-    }
-
-    public Usuario actualizarUsuario(int id, String correo) {
-        Usuario usuario = this.usuarioCrudRepository.findById(id).get();
-        usuario.setCorreo(correo);
-        usuario = this.usuarioCrudRepository.save(usuario);
-        return usuario;
     }
 }

@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawfy.controller.requestBody.UsuarioRequestBody;
+import com.dawfy.controller.requestBody.usuario.UsuarioRequestBodyPOST;
+import com.dawfy.controller.requestBody.usuario.UsuarioRequestBodyPUT;
 import com.dawfy.persistence.entities.Usuario;
 import com.dawfy.services.PaisService;
 import com.dawfy.services.UsuarioService;
@@ -36,9 +37,8 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> usuarios() {
-        List<Usuario> usuarios = this.usuarioService.findAll();
+        List<Usuario> usuarios = this.usuarioService.getAllUsuarios();
         List<UsuarioDTO> usuariosDTO = new ArrayList<>();
-
         for (Usuario usuario : usuarios) {
             usuariosDTO.add(UsuarioDtoMapper.mapper(usuario));
         }
@@ -47,7 +47,7 @@ public class UsuarioController {
 
     @GetMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> usuario(@PathVariable int idUsuario) {
-        Optional<Usuario> usuario = this.usuarioService.findById(idUsuario);
+        Optional<Usuario> usuario = this.usuarioService.getUsuarioById(idUsuario);
         if (usuario.isPresent()) {
             return ResponseEntity.ok(UsuarioDtoMapper.mapper(usuario.get()));
         }
@@ -56,7 +56,7 @@ public class UsuarioController {
 
     @GetMapping("/fecha/{idUsuario}")
     public ResponseEntity<String> fechaNacimiento(@PathVariable int idUsuario) {
-        Optional<Usuario> usuario = this.usuarioService.findById(idUsuario);
+        Optional<Usuario> usuario = this.usuarioService.getUsuarioById(idUsuario);
         if (usuario.isPresent()) {
             if (usuario.get().getFechaNacimiento() != null) {
                 return ResponseEntity.ok(usuario.get().getFechaNacimiento().toString());
@@ -106,7 +106,7 @@ public class UsuarioController {
 
     @GetMapping("/correo/{idUsuario}")
     public ResponseEntity<String> correoDeUsuario(@PathVariable int idUsuario) {
-        Optional<Usuario> usuario = this.usuarioService.findById(idUsuario);
+        Optional<Usuario> usuario = this.usuarioService.getUsuarioById(idUsuario);
         if (usuario.isPresent()) {
             if (usuario.get().getCorreo() != null) {
                 return ResponseEntity.ok(usuario.get().getCorreo());
@@ -125,43 +125,42 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> crear(@RequestBody UsuarioRequestBody usuario) {
-        Usuario respuesta = new Usuario();
-        respuesta.setNombre(usuario.getNombre());
-        respuesta.setCorreo(usuario.getCorreo());
-        respuesta.setPais(this.paisService.findById(usuario.getPais()));
-        respuesta.setFechaNacimiento(usuario.getFechaNacimiento());
+    public ResponseEntity<UsuarioDTO> crear(@RequestBody UsuarioRequestBodyPOST usuario) {
+        Usuario usuarioNuevo = new Usuario();
+        usuarioNuevo.setNombre(usuario.getNombre());
+        usuarioNuevo.setCorreo(usuario.getCorreo());
+        usuarioNuevo.setPais(this.paisService.findById(usuario.getPais()));
+        usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
         if (usuario.getFoto() != null) {
-            respuesta.setFoto(usuario.getFoto());
+            usuarioNuevo.setFoto(usuario.getFoto());
         }
-        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.create(respuesta)));
+        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.saveUsuario(usuarioNuevo)));
     }
 
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioDTO> actualizar(@PathVariable int idUsuario, @RequestBody UsuarioRequestBody usuario) {
-        if (!this.usuarioService.exists(idUsuario)) {
+    public ResponseEntity<UsuarioDTO> actualizar(@PathVariable int idUsuario, @RequestBody UsuarioRequestBodyPUT usuario) {
+        if (!this.usuarioService.existsUsuario(idUsuario)) {
             return ResponseEntity.notFound().build();
         }
         if (!(usuario.getId() == idUsuario)) {
             return ResponseEntity.badRequest().build();
-
         }
-        Usuario actualizable = this.usuarioService.findById(idUsuario).get();
+        Usuario usuarioNuevo = this.usuarioService.getUsuarioById(idUsuario).get();
 
-        actualizable.setNombre(usuario.getNombre());
-        actualizable.setCorreo(usuario.getCorreo());
-        actualizable.setPais(this.paisService.findById(usuario.getPais()));
-        actualizable.setFechaNacimiento(usuario.getFechaNacimiento());
+        usuarioNuevo.setNombre(usuario.getNombre());
+        usuarioNuevo.setCorreo(usuario.getCorreo());
+        usuarioNuevo.setPais(this.paisService.findById(usuario.getPais()));
+        usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
         if (usuario.getFoto() != null) {
-            actualizable.setFoto(usuario.getFoto());
+            usuarioNuevo.setFoto(usuario.getFoto());
         }
 
-        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.save(actualizable)));
+        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.updateUsuario(usuarioNuevo)));
     }
 
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<UsuarioDTO> borrar(int idUsuario) {
-        if (this.usuarioService.delete(idUsuario)) {
+        if (this.usuarioService.deleteUsuario(idUsuario)) {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
