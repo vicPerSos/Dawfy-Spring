@@ -75,4 +75,7 @@ public class UsuarioService {
     public LocalDate fechaUsuario(int id) {
         return this.usuarioCrudRepository.findById(id).get().getFechaNacimiento();
     }
+    public List<Usuario> usuarioPorNombre(String nombre) {
+        return this.usuarioCrudRepository.findByNombreStartingWithIgnoreCase(nombre);
+    }
 }

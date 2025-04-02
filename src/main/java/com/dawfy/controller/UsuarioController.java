@@ -54,6 +54,16 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<UsuarioDTO>> usuarioPorNombre(@PathVariable String nombre) {
+        List<Usuario> usuarios = this.usuarioService.usuarioPorNombre(nombre);
+        List<UsuarioDTO> usuariosDTO = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            usuariosDTO.add(UsuarioDtoMapper.mapper(usuario));
+        }
+        return ResponseEntity.ok(usuariosDTO);
+    }
+
     @GetMapping("/fecha/{idUsuario}")
     public ResponseEntity<String> fechaNacimiento(@PathVariable int idUsuario) {
         Optional<Usuario> usuario = this.usuarioService.getUsuarioById(idUsuario);

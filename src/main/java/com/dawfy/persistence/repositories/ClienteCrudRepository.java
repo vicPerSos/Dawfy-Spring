@@ -17,4 +17,5 @@ public interface ClienteCrudRepository extends CrudRepository<Cliente, Integer> 
     Optional<Cliente> findByCorreo(String correo);
 
     List<Cliente> findByFechaNacimiento(LocalDate fechaNacimiento);
+    List<Cliente> findByNombreStartingWithIgnoreCase(String nombre);
 }

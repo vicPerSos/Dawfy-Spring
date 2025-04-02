@@ -54,6 +54,16 @@ public class ClienteController {
         return ResponseEntity.ok(ClienteDTOMapper.mapper(result.get()));
     }
 
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<List<ClienteDTO>> getClientesByNombre(@PathVariable String nombre) {
+        List<Cliente> clientes = this.clienteService.clientePorNombre(nombre);
+        List<ClienteDTO> clientesDTO = new ArrayList<>();
+        for (Cliente cliente : clientes) {
+            clientesDTO.add(ClienteDTOMapper.mapper(cliente));
+        }
+        return ResponseEntity.ok(clientesDTO);
+    }
+
     @GetMapping("/fecha/{idCliente}")
     public ResponseEntity<String> fechaNacimiento(@PathVariable int idCliente) {
         Optional<Cliente> cliente = this.clienteService.getClienteById(idCliente);

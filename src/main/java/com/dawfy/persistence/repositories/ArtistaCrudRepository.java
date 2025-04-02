@@ -1,11 +1,21 @@
 package com.dawfy.persistence.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import com.dawfy.persistence.entities.Artista;
 
 public interface ArtistaCrudRepository extends CrudRepository<Artista, Integer> {
-    List<Artista> findByNombreStartingWith(String nombre);
+    @Query("SELECT a FROM Artista a JOIN a.pais p WHERE p.codigo_iso = :nombre")
+    List<Artista> findByPais(@Param("nombre") String nombre);
+
+    Optional<Artista> findByCorreo(String correo);
+
+    List<Artista> findByFechaNacimiento(LocalDate fechaNacimiento);
+    List<Artista> findByNombreStartingWithIgnoreCase(String nombre);
 }

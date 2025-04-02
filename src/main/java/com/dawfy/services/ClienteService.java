@@ -75,4 +75,8 @@ public class ClienteService {
     public LocalDate fechaCliente(int id) {
         return this.clienteCrudRepository.findById(id).get().getFechaNacimiento();
     }
+
+    public List<Cliente> clientePorNombre(String nombre) {
+        return this.clienteCrudRepository.findByNombreStartingWithIgnoreCase(nombre);
+    }
 }

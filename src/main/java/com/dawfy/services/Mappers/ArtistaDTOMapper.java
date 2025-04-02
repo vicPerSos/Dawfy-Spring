@@ -4,7 +4,7 @@ import com.dawfy.persistence.entities.Artista;
 import com.dawfy.services.DTOs.ArtistaDTO;
 
 public class ArtistaDTOMapper {
-    public static ArtistaDTO map(Artista artista) {
+    public static ArtistaDTO mapper(Artista artista) {
         if (artista == null) {
             return null;
         }

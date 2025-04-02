@@ -2,13 +2,9 @@ package com.dawfy.services.DTOs;
 
 import java.time.LocalDate;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class ArtistaDTO {
     private int id;
     private String nombre;
