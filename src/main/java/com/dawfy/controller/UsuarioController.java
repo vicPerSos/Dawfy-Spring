@@ -136,19 +136,25 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> crear(@RequestBody UsuarioRequestBodyPOST usuario) {
-        Usuario usuarioNuevo = new Usuario();
-        usuarioNuevo.setNombre(usuario.getNombre());
-        usuarioNuevo.setCorreo(usuario.getCorreo());
-        usuarioNuevo.setPais(this.paisService.findById(usuario.getPais()));
-        usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
-        if (usuario.getFoto() != null) {
-            usuarioNuevo.setFoto(usuario.getFoto());
+        try {
+            Usuario usuarioNuevo = new Usuario();
+            usuarioNuevo.setNombre(usuario.getNombre());
+            usuarioNuevo.setCorreo(usuario.getCorreo());
+            usuarioNuevo.setPais(this.paisService.findById(usuario.getPais()));
+
+            usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
+            usuarioNuevo.setFoto(usuario.getFoto() != null ? usuario.getFoto()
+                    : "http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193");
+            return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.saveUsuario(usuarioNuevo)));
+        } catch (Exception e) {
+            System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.saveUsuario(usuarioNuevo)));
     }
 
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<UsuarioDTO> actualizar(@PathVariable int idUsuario, @RequestBody UsuarioRequestBodyPUT usuario) {
+    public ResponseEntity<UsuarioDTO> actualizar(@PathVariable int idUsuario,
+            @RequestBody UsuarioRequestBodyPUT usuario) {
         if (!this.usuarioService.existsUsuario(idUsuario)) {
             return ResponseEntity.notFound().build();
         }

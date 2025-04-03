@@ -135,17 +135,24 @@ public class ArtistaController {
     }
 
     @PostMapping
-    public ResponseEntity<Artista> createArtista(@RequestBody ArtistaRequestBodyPOST artista) {
-        Artista nuevoArtista = new Artista();
-        nuevoArtista.setNombre(artista.getNombre());
-        nuevoArtista.setCorreo(artista.getCorreo());
-        nuevoArtista.setFechaNacimiento(artista.getFechaNacimiento());
-        nuevoArtista.setPais(this.paisService.findById(artista.getPais()));
-        return ResponseEntity.ok(this.artistaService.createArtista(nuevoArtista));
+    public ResponseEntity<ArtistaDTO> createArtista(@RequestBody ArtistaRequestBodyPOST artista) {
+        try {
+            Artista artistaNuevo = new Artista();
+            artistaNuevo.setNombre(artista.getNombre());
+            artistaNuevo.setCorreo(artista.getCorreo());
+            artistaNuevo.setFechaNacimiento(artista.getFechaNacimiento());
+            artistaNuevo.setPais(this.paisService.findById(artista.getPais()));
+            artistaNuevo.setFoto(artista.getFoto() != null ? artista.getFoto()
+                    : "http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193");
+            return ResponseEntity.ok(ArtistaDTOMapper.mapper(this.artistaService.createArtista(artistaNuevo)));
+        } catch (Exception e) {
+            System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{idArtista}")
-    public ResponseEntity<Artista> updateArtista(@PathVariable int idArtista,
+    public ResponseEntity<ArtistaDTO> updateArtista(@PathVariable int idArtista,
             @RequestBody ArtistaRequestBodyPUT artista) {
         if (!this.artistaService.existsArtista(idArtista)) {
             return ResponseEntity.notFound().build();
@@ -159,8 +166,10 @@ public class ArtistaController {
         artistaNuevo.setFechaNacimiento(artista.getFechaNacimiento());
         artistaNuevo.setPais(this.paisService.findById(artista.getPais()));
         artistaNuevo.setFoto(artista.getFoto());
+        artistaNuevo.setFoto(artista.getFoto() != null ? artista.getFoto()
+                : this.artistaService.getArtistaById(idArtista).get().getFoto());
 
-        return ResponseEntity.ok(this.artistaService.updateArtista(artistaNuevo));
+        return ResponseEntity.ok(ArtistaDTOMapper.mapper(this.artistaService.updateArtista(artistaNuevo)));
     }
 
     @DeleteMapping("/{idArtista}")

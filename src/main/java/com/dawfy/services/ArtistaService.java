@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Artista;
-import com.dawfy.persistence.entities.Usuario;
 import com.dawfy.persistence.repositories.ArtistaCrudRepository;
 
 @Service
@@ -32,16 +31,28 @@ public class ArtistaService {
         return this.artistaCrudRepository.save(artista);
     }
 
-    public Artista updateArtista(Artista artista) {
+    public Artista updateArtista(int id, Artista artista) {
+        //TODO aplicar esto;
+        /*
+        public Artista actualizarArtista(Long id, Artista artistaActualizado) {
+        // Buscar el artista por ID
+        Artista artistaExistente = artistaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Artista no encontrado con ID: " + id));
+
+        // Actualizar los campos del artista existente
+        artistaExistente.setNombre(artistaActualizado.getNombre());
+        artistaExistente.setGenero(artistaActualizado.getGenero());
+        // ... otros campos
+
+        // Guardar el artista actualizado
+        return artistaRepository.save(artistaExistente);
+    }
+        */
         return this.artistaCrudRepository.save(artista);
     }
 
     public boolean existsArtista(int id) {
         return this.artistaCrudRepository.existsById(id);
-    }
-
-    public Artista saveArtista(Artista artista) {
-        return this.artistaCrudRepository.save(artista);
     }
 
     public boolean deleteArtista(int id) {
