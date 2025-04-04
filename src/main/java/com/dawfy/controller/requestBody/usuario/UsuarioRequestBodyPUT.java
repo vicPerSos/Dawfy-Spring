@@ -13,4 +13,5 @@ public class UsuarioRequestBodyPUT {
     private LocalDate fechaNacimiento;
     private String pais;
     private String foto;
+    private String password;
 }

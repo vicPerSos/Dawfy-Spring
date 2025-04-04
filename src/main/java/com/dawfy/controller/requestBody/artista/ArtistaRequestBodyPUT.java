@@ -13,5 +13,6 @@ public class ArtistaRequestBodyPUT {
     private LocalDate fechaNacimiento;
     private String pais;
     private String foto;
+    private String password;
 
 }

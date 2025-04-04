@@ -144,6 +144,10 @@ public class ArtistaController {
             artistaNuevo.setPais(this.paisService.findById(artista.getPais()));
             artistaNuevo.setFoto(artista.getFoto() != null ? artista.getFoto()
                     : "http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193");
+            if (artista.getPassword() == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            artistaNuevo.setPassword(artista.getPassword());
             return ResponseEntity.ok(ArtistaDTOMapper.mapper(this.artistaService.createArtista(artistaNuevo)));
         } catch (Exception e) {
             System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());
@@ -165,11 +169,14 @@ public class ArtistaController {
         artistaNuevo.setCorreo(artista.getCorreo());
         artistaNuevo.setFechaNacimiento(artista.getFechaNacimiento());
         artistaNuevo.setPais(this.paisService.findById(artista.getPais()));
-        artistaNuevo.setFoto(artista.getFoto());
         artistaNuevo.setFoto(artista.getFoto() != null ? artista.getFoto()
                 : this.artistaService.getArtistaById(idArtista).get().getFoto());
+        if (artista.getPassword() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        artistaNuevo.setPassword(artista.getPassword());
 
-        return ResponseEntity.ok(ArtistaDTOMapper.mapper(this.artistaService.updateArtista(artistaNuevo)));
+        return ResponseEntity.ok(ArtistaDTOMapper.mapper(this.artistaService.updateArtista(idArtista, artistaNuevo)));
     }
 
     @DeleteMapping("/{idArtista}")

@@ -145,6 +145,10 @@ public class UsuarioController {
             usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
             usuarioNuevo.setFoto(usuario.getFoto() != null ? usuario.getFoto()
                     : "http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193");
+            if (usuario.getPassword() == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            usuarioNuevo.setPassword(usuario.getPassword());
             return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.saveUsuario(usuarioNuevo)));
         } catch (Exception e) {
             System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());
@@ -167,11 +171,13 @@ public class UsuarioController {
         usuarioNuevo.setCorreo(usuario.getCorreo());
         usuarioNuevo.setPais(this.paisService.findById(usuario.getPais()));
         usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
-        if (usuario.getFoto() != null) {
-            usuarioNuevo.setFoto(usuario.getFoto());
+        usuarioNuevo.setFoto(usuario.getFoto() != null ? usuario.getFoto() : this.usuarioService.getUsuarioById(idUsuario).get().getFoto());
+        if (usuario.getPassword() == null) {
+            return ResponseEntity.badRequest().build();
         }
+        usuarioNuevo.setPassword(usuario.getPassword());
 
-        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.updateUsuario(usuarioNuevo)));
+        return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.updateUsuario(idUsuario, usuarioNuevo)));
     }
 
     @DeleteMapping("/{idUsuario}")

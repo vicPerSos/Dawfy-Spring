@@ -146,10 +146,14 @@ public class ClienteController {
             clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
             clienteNuevo.setFoto(cliente.getFoto() != null ? cliente.getFoto()
                     : "http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193");
+            if (cliente.getPassword() == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            clienteNuevo.setPassword(cliente.getPassword());
             this.clienteService.saveCliente(clienteNuevo);
             return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
         } catch (Exception e) {
-            System.out.println("La peticion no realizó correctamente. Error: "+e.getMessage());
+            System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
@@ -169,14 +173,18 @@ public class ClienteController {
         clienteNuevo.setCorreo(cliente.getCorreo());
         clienteNuevo.setFechaNacimiento(cliente.getFechaNacimiento());
         clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
-        if(cliente.getFoto() == null) {
+        if (cliente.getFoto() == null) {
             clienteNuevo.setFoto("http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193'::character varying");
         } else
-        clienteNuevo.setFoto(cliente.getFoto());
+            clienteNuevo.setFoto(cliente.getFoto());
         if (cliente.getFoto() != null) {
             clienteNuevo.setFoto(cliente.getFoto());
         }
-        this.clienteService.updateCliente(clienteNuevo);
+        if (cliente.getPassword() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        clienteNuevo.setPassword(cliente.getPassword());
+        this.clienteService.updateCliente(id, clienteNuevo);
         return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
     }
 

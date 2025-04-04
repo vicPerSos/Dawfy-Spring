@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Usuario;
@@ -15,6 +16,9 @@ public class UsuarioService {
     @Autowired
     private UsuarioCrudRepository usuarioCrudRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Usuario> getAllUsuarios() {
         return (List<Usuario>) this.usuarioCrudRepository.findAll();
     }
@@ -24,10 +28,20 @@ public class UsuarioService {
     }
 
     public Usuario saveUsuario(Usuario usuario) {
+        usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
         return this.usuarioCrudRepository.save(usuario);
     }
 
-    public Usuario updateUsuario(Usuario usuario) {
+    public Usuario updateUsuario(int id, Usuario usuario) {
+        Usuario usuarioExistente = this.usuarioCrudRepository.findById(id).get();
+
+        usuarioExistente.setNombre(usuario.getNombre());
+        usuarioExistente.setCorreo(usuario.getCorreo());
+        usuarioExistente.setFechaNacimiento(usuario.getFechaNacimiento());
+        usuarioExistente.setPais(usuario.getPais());
+        usuarioExistente.setFoto(usuario.getFoto());
+        usuarioExistente.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
+
         return this.usuarioCrudRepository.save(usuario);
     }
 
@@ -75,6 +89,7 @@ public class UsuarioService {
     public LocalDate fechaUsuario(int id) {
         return this.usuarioCrudRepository.findById(id).get().getFechaNacimiento();
     }
+
     public List<Usuario> usuarioPorNombre(String nombre) {
         return this.usuarioCrudRepository.findByNombreStartingWithIgnoreCase(nombre);
     }

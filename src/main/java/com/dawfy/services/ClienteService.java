@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Cliente;
@@ -15,6 +16,9 @@ public class ClienteService {
     @Autowired
     private ClienteCrudRepository clienteCrudRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public List<Cliente> getAllClientes() {
         return (List<Cliente>) this.clienteCrudRepository.findAll();
     }
@@ -24,11 +28,20 @@ public class ClienteService {
     }
 
     public void saveCliente(Cliente cliente) {
+        cliente.setPassword(this.passwordEncoder.encode(cliente.getPassword()));
         this.clienteCrudRepository.save(cliente);
     }
 
-    public void updateCliente(Cliente cliente) {
-        this.clienteCrudRepository.save(cliente);
+    public void updateCliente(int id, Cliente cliente) {
+        Cliente clienteExistente = this.clienteCrudRepository.findById(id).get();
+
+        clienteExistente.setNombre(cliente.getNombre());
+        clienteExistente.setCorreo(cliente.getCorreo());
+        clienteExistente.setFechaNacimiento(cliente.getFechaNacimiento());
+        clienteExistente.setPais(cliente.getPais());
+        clienteExistente.setFoto(cliente.getFoto());
+        clienteExistente.setPassword(this.passwordEncoder.encode(cliente.getPassword()));
+        this.clienteCrudRepository.save(clienteExistente);
     }
 
     public boolean existsCliente(int id) {

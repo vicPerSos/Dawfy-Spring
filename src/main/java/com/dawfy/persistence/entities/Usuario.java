@@ -30,5 +30,8 @@ public class Usuario {
     @Column(columnDefinition = "TEXT")
     private String foto;
 
+    @Column(columnDefinition = "TEXT")
+    private String password;
+
 
 }
