@@ -33,5 +33,14 @@ public class Usuario {
     @Column(columnDefinition = "TEXT")
     private String password;
 
-
+    @Column(name = "cuenta_expirada")
+    private boolean cuentaExpirada;
+    @Column(name = "cuenta_bloqueada")
+    private boolean cuentaBloqueada;
+    @Column(name = "credencial_expirada")
+    private boolean credencialExpirada;
+    @Column(name = "habilitada")
+    private boolean habilitada;
+    @Column(name = "roll")
+    private String roll;
 }
