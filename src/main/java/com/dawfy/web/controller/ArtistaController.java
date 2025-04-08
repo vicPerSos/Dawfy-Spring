@@ -1,4 +1,4 @@
-package com.dawfy.controller;
+package com.dawfy.web.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dawfy.controller.requestBody.artista.ArtistaRequestBodyPOST;
-import com.dawfy.controller.requestBody.artista.ArtistaRequestBodyPUT;
 import com.dawfy.persistence.entities.Artista;
 import com.dawfy.services.ArtistaService;
 import com.dawfy.services.PaisService;
 import com.dawfy.services.DTOs.ArtistaDTO;
 import com.dawfy.services.Mappers.ArtistaDTOMapper;
+import com.dawfy.web.controller.requestBody.artista.ArtistaRequestBodyPOST;
+import com.dawfy.web.controller.requestBody.artista.ArtistaRequestBodyPUT;
 
 @RestController
 @RequestMapping("/artista")

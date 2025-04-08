@@ -1,11 +1,11 @@
-package com.dawfy.controller.requestBody.usuario;
+package com.dawfy.web.controller.requestBody.cliente;
 
 import java.time.LocalDate;
 
 import lombok.Data;
 
 @Data
-public class UsuarioRequestBodyPOST {
+public class ClienteRequestBodyPOST {
     private String nombre;
     private String correo;
 

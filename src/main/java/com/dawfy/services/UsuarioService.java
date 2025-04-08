@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dawfy.enums.Roles;
 import com.dawfy.persistence.entities.Usuario;
 import com.dawfy.persistence.repositories.UsuarioCrudRepository;
 
@@ -28,6 +29,17 @@ public class UsuarioService {
     }
 
     public Usuario saveUsuario(Usuario usuario) {
+        String username = "";
+        for (int i = 0; i < 9; i++) {
+            int random = (int) (Math.random() * 10);
+            username += random;
+        }
+        usuario.setRoll(Roles.ADMIN.toString());
+        usuario.setCuentaExpirada(false);
+        usuario.setCuentaBloqueada(false);
+        usuario.setCredencialExpirada(false);
+        usuario.setHabilitada(true);
+        usuario.setUsername(username);
         usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
         return this.usuarioCrudRepository.save(usuario);
     }

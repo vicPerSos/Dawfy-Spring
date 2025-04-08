@@ -1,4 +1,4 @@
-package com.dawfy.controller;
+package com.dawfy.web.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
