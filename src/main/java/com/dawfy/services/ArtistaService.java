@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Artista;
@@ -15,9 +14,6 @@ import com.dawfy.persistence.repositories.ArtistaCrudRepository;
 public class ArtistaService {
     @Autowired
     private ArtistaCrudRepository artistaCrudRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public List<Artista> getAllArtistas() {
         return (List<Artista>) this.artistaCrudRepository.findAll();
@@ -32,7 +28,6 @@ public class ArtistaService {
     }
 
     public Artista createArtista(Artista artista) {
-        artista.setPassword(this.passwordEncoder.encode(artista.getPassword()));
         return this.artistaCrudRepository.save(artista);
     }
 
@@ -44,7 +39,7 @@ public class ArtistaService {
         artistaExistente.setFechaNacimiento(artista.getFechaNacimiento());
         artistaExistente.setPais(artista.getPais());
         artistaExistente.setFoto(artista.getFoto());
-        artistaExistente.setPassword(this.passwordEncoder.encode(artista.getPassword()));
+        artistaExistente.setPassword(artista.getPassword());
 
         return this.artistaCrudRepository.save(artistaExistente);
     }

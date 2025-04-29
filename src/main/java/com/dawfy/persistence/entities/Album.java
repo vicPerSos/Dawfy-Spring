@@ -28,6 +28,6 @@ public class Album {
     private LocalDate fechaLanzamiento;
 
     @ManyToOne
-    @JoinColumn(name = "artista") // Especificar la columna de clave foránea
+    @JoinColumn(name = "artista")
     private Artista artista;
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.enums.Roles;
@@ -16,9 +15,6 @@ import com.dawfy.persistence.repositories.UsuarioCrudRepository;
 public class UsuarioService {
     @Autowired
     private UsuarioCrudRepository usuarioCrudRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     public List<Usuario> getAllUsuarios() {
         return (List<Usuario>) this.usuarioCrudRepository.findAll();
@@ -40,7 +36,6 @@ public class UsuarioService {
         usuario.setCredencialExpirada(false);
         usuario.setHabilitada(true);
         usuario.setUsername(username);
-        usuario.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
         return this.usuarioCrudRepository.save(usuario);
     }
 
@@ -52,7 +47,7 @@ public class UsuarioService {
         usuarioExistente.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioExistente.setPais(usuario.getPais());
         usuarioExistente.setFoto(usuario.getFoto());
-        usuarioExistente.setPassword(this.passwordEncoder.encode(usuario.getPassword()));
+        usuarioExistente.setPassword(usuario.getPassword());
 
         return this.usuarioCrudRepository.save(usuario);
     }
