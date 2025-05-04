@@ -1,4 +1,4 @@
-package com.dawfy.web.controller.requestBody.artista;
+package com.dawfy.web.requestBody.artista;
 
 import java.time.LocalDate;
 

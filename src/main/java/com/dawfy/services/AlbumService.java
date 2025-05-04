@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Album;
-import com.dawfy.persistence.repositories.AlmbumRepository;
+import com.dawfy.persistence.repositories.AlbumRepository;
 
 @Service
 public class AlbumService {
     @Autowired
-    private AlmbumRepository albumRepository;
+    private AlbumRepository albumRepository;
 
     public List<Album> getAllAlbums() {
         return (List<Album>) this.albumRepository.findAll();
@@ -58,6 +58,14 @@ public class AlbumService {
             return album.getArtista().getNombre();
         }
         return null;
+    }
+
+    public List<Album> getAlbumsByArtistaId(int artistaId) {
+        return this.albumRepository.findByArtistaId(artistaId);
+    }
+
+    public List<Album> getAlbumsByArtistaNombre(String artistaNombre) {
+        return this.albumRepository.findByNombreStartingWithIgnoreCase(artistaNombre);
     }
     
 

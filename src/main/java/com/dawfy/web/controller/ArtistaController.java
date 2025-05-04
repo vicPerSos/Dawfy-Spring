@@ -23,8 +23,8 @@ import com.dawfy.services.ArtistaService;
 import com.dawfy.services.PaisService;
 import com.dawfy.services.DTOs.ArtistaDTO;
 import com.dawfy.services.Mappers.ArtistaDTOMapper;
-import com.dawfy.web.controller.requestBody.artista.ArtistaRequestBodyPOST;
-import com.dawfy.web.controller.requestBody.artista.ArtistaRequestBodyPUT;
+import com.dawfy.web.requestBody.artista.ArtistaRequestBodyPOST;
+import com.dawfy.web.requestBody.artista.ArtistaRequestBodyPUT;
 
 @RestController
 @RequestMapping("/artista")

@@ -23,8 +23,8 @@ import com.dawfy.services.PaisService;
 import com.dawfy.services.UsuarioService;
 import com.dawfy.services.DTOs.UsuarioDTO;
 import com.dawfy.services.Mappers.UsuarioDtoMapper;
-import com.dawfy.web.controller.requestBody.usuario.UsuarioRequestBodyPOST;
-import com.dawfy.web.controller.requestBody.usuario.UsuarioRequestBodyPUT;
+import com.dawfy.web.requestBody.usuario.UsuarioRequestBodyPOST;
+import com.dawfy.web.requestBody.usuario.UsuarioRequestBodyPUT;
 
 @RestController
 @RequestMapping("/usuario")

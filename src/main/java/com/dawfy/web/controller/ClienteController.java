@@ -23,8 +23,8 @@ import com.dawfy.services.ClienteService;
 import com.dawfy.services.PaisService;
 import com.dawfy.services.DTOs.ClienteDTO;
 import com.dawfy.services.Mappers.ClienteDTOMapper;
-import com.dawfy.web.controller.requestBody.cliente.ClienteRequestBodyPOST;
-import com.dawfy.web.controller.requestBody.cliente.ClienteRequestBodyPUT;
+import com.dawfy.web.requestBody.cliente.ClienteRequestBodyPOST;
+import com.dawfy.web.requestBody.cliente.ClienteRequestBodyPUT;
 
 @RestController
 @RequestMapping("/cliente")

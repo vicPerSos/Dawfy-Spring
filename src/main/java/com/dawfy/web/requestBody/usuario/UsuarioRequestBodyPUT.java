@@ -1,11 +1,11 @@
-package com.dawfy.web.controller.requestBody.artista;
+package com.dawfy.web.requestBody.usuario;
 
 import java.time.LocalDate;
 
 import lombok.Data;
 
 @Data
-public class ArtistaRequestBodyPUT {
+public class UsuarioRequestBodyPUT {
     private int id;
     private String nombre;
     private String correo;
@@ -14,5 +14,4 @@ public class ArtistaRequestBodyPUT {
     private String pais;
     private String foto;
     private String password;
-
 }
