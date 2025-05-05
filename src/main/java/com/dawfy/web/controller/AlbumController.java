@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dawfy.persistence.entities.Album;
 import com.dawfy.services.AlbumService;
+import com.dawfy.services.ArtistaService;
 import com.dawfy.services.DTOs.AlbumDTO;
 import com.dawfy.services.Mappers.AlbumDTOMapper;
+import com.dawfy.web.requestBody.album.AlbumRequestBodyPOST;
+import com.dawfy.web.requestBody.album.AlbumRequestBodyPUT;
 
 @RestController
 @RequestMapping("/albums")
@@ -25,6 +28,9 @@ public class AlbumController {
 
     @Autowired
     private AlbumService albumService;
+
+    @Autowired
+    private ArtistaService artistaService;
 
     @GetMapping
     public ResponseEntity<List<AlbumDTO>> getAllAlbums() {
@@ -59,13 +65,30 @@ public class AlbumController {
     }
 
     @PostMapping
-    public ResponseEntity<AlbumDTO> createAlbum(@RequestBody Album album) {
+    public ResponseEntity<AlbumDTO> createAlbum(@RequestBody AlbumRequestBodyPOST albumRequestBody) {
+        Album album = new Album();
+        album.setNombre(albumRequestBody.getNombre());
+        album.setFechaLanzamiento(albumRequestBody.getFechaLanzamiento());
+        try {
+            album.setArtista(this.artistaService.getArtistaById(albumRequestBody.getArtista()).get());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
         Album nuevoAlbum = this.albumService.createAlbum(album);
         return ResponseEntity.ok(AlbumDTOMapper.toDTO(nuevoAlbum));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumDTO> updateAlbum(@PathVariable int id, @RequestBody Album album) {
+    public ResponseEntity<AlbumDTO> updateAlbum(@PathVariable int id, @RequestBody AlbumRequestBodyPUT albumRequestBody) {
+        Album album = new Album();
+        album.setIdAlbum(id);
+        album.setNombre(albumRequestBody.getNombre());
+        album.setFechaLanzamiento(albumRequestBody.getFechaLanzamiento());
+        try {
+            album.setArtista(this.artistaService.getArtistaById(albumRequestBody.getArtista()).get());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
         Album albumActualizado = this.albumService.updateAlbum(id, album);
         if (albumActualizado != null) {
             return ResponseEntity.ok(AlbumDTOMapper.toDTO(albumActualizado));

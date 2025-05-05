@@ -1,12 +1,6 @@
 package com.dawfy.persistence.entities;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Collections;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "Usuario")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Usuario implements UserDetails {
+public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -61,34 +55,4 @@ public class Usuario implements UserDetails {
     private boolean habilitada;
     @Column(name = "roll")
     private String roll;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(this.roll));
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.cuentaExpirada;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.cuentaBloqueada;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.credencialExpirada;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.habilitada;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
 }
