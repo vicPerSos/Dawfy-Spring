@@ -35,8 +35,11 @@ public class ClienteController {
     @Autowired
     private PaisService paisService;
 
+
+
     @GetMapping
     private ResponseEntity<List<ClienteDTO>> getClientes() {
+
         List<Cliente> clientes = this.clienteService.getAllClientes();
         List<ClienteDTO> clientesDTO = new ArrayList<>();
         for (Cliente cliente : clientes) {

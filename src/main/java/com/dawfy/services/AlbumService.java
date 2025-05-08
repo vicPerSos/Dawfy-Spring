@@ -13,11 +13,7 @@ public class AlbumService {
     @Autowired
     private AlbumRepository albumRepository;
 
-    @Autowired
-    private SpotifyService spotifyService;
-
     public List<Album> getAllAlbums() {
-        System.out.println(this.spotifyService.getClientCredentialsToken());
         return (List<Album>) this.albumRepository.findAll();
     }
 
@@ -71,6 +67,5 @@ public class AlbumService {
     public List<Album> getAlbumsByArtistaNombre(String artistaNombre) {
         return this.albumRepository.findByNombreStartingWithIgnoreCase(artistaNombre);
     }
-    
 
 }

@@ -14,6 +14,7 @@ import com.dawfy.persistence.repositories.ClienteCrudRepository;
 public class ClienteService {
     @Autowired
     private ClienteCrudRepository clienteCrudRepository;
+    
 
     public List<Cliente> getAllClientes() {
         return (List<Cliente>) this.clienteCrudRepository.findAll();
