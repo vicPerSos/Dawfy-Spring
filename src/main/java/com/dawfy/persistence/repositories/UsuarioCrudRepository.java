@@ -21,4 +21,6 @@ public interface UsuarioCrudRepository extends CrudRepository<Usuario, Integer> 
     List<Usuario> findByFechaNacimiento(LocalDate fechaNacimiento);
 
     List<Usuario> findByNombreStartingWithIgnoreCase(String nombre);
+
+    Optional<Usuario> findByUsername(String username);
 }

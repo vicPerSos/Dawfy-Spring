@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dawfy.enums.Roles;
 import com.dawfy.persistence.entities.Cliente;
 import com.dawfy.persistence.repositories.ClienteCrudRepository;
 
@@ -14,7 +15,6 @@ import com.dawfy.persistence.repositories.ClienteCrudRepository;
 public class ClienteService {
     @Autowired
     private ClienteCrudRepository clienteCrudRepository;
-    
 
     public List<Cliente> getAllClientes() {
         return (List<Cliente>) this.clienteCrudRepository.findAll();
@@ -25,6 +25,17 @@ public class ClienteService {
     }
 
     public void saveCliente(Cliente cliente) {
+        String username = "";
+        for (int i = 0; i < 9; i++) {
+            int random = (int) (Math.random() * 10);
+            username += random;
+        }
+        cliente.setRoll(Roles.CLIENTE.toString());
+        cliente.setCuentaExpirada(false);
+        cliente.setCuentaBloqueada(false);
+        cliente.setCredencialExpirada(false);
+        cliente.setHabilitada(true);
+        cliente.setUsername(username);
         this.clienteCrudRepository.save(cliente);
     }
 

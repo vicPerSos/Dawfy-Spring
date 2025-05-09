@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dawfy.enums.Roles;
 import com.dawfy.persistence.entities.Artista;
 import com.dawfy.persistence.repositories.ArtistaCrudRepository;
 
@@ -28,6 +29,17 @@ public class ArtistaService {
     }
 
     public Artista createArtista(Artista artista) {
+        String username = "";
+        for (int i = 0; i < 9; i++) {
+            int random = (int) (Math.random() * 10);
+            username += random;
+        }
+        artista.setRoll(Roles.ARTISTA.toString());
+        artista.setCuentaExpirada(false);
+        artista.setCuentaBloqueada(false);
+        artista.setCredencialExpirada(false);
+        artista.setHabilitada(true);
+        artista.setUsername(username);
         return this.artistaCrudRepository.save(artista);
     }
 

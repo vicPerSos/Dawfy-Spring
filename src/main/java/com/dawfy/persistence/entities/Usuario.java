@@ -55,4 +55,5 @@ public class Usuario {
     private boolean habilitada;
     @Column(name = "roll")
     private String roll;
+
 }
