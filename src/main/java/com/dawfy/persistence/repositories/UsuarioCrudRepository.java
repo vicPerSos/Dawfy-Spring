@@ -23,4 +23,6 @@ public interface UsuarioCrudRepository extends CrudRepository<Usuario, Integer> 
     List<Usuario> findByNombreStartingWithIgnoreCase(String nombre);
 
     Optional<Usuario> findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

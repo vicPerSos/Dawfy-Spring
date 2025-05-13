@@ -15,6 +15,7 @@ public class UsuarioDtoMapper {
         usuarioDto.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioDto.setPais(usuario.getPais().getNombre());
         usuarioDto.setFoto(usuario.getFoto());
+        usuarioDto.setUsername(usuario.getUsername());
         return usuarioDto;
     }
 }
