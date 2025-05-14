@@ -8,10 +8,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.dawfy.domain.dto.RegisterDto;
 import com.dawfy.enums.Roles;
 import com.dawfy.persistence.entities.Usuario;
 import com.dawfy.persistence.repositories.UsuarioCrudRepository;
-import com.dawfy.web.requestBody.usuario.UsuarioRequestBodyPOST;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -22,11 +22,10 @@ public class UserSecurityService implements UserDetailsService {
     @Autowired
     private PaisService paisService;
 
-    public String register(UsuarioRequestBodyPOST request) {
+    public String register(RegisterDto request) {
         if (usuarioCrudRepository.existsByUsername(request.getUsername())) {
             return "Nombre de usuario ya en uso";
         }
-
         Usuario user = new Usuario();
         user.setNombre(request.getNombre());
         user.setCorreo(request.getCorreo());
@@ -43,7 +42,19 @@ public class UserSecurityService implements UserDetailsService {
         user.setCuentaBloqueada(false);
         user.setCredencialExpirada(false);
         user.setCredencialExpirada(false);
-        user.setRoll(Roles.CLIENTE.name());
+        try {
+            if (request.getRoll().equals(Roles.CLIENTE.name())) {
+                user.setRoll(Roles.CLIENTE.name());
+            } else if (request.getRoll().equals(Roles.ARTISTA.name())) {
+                user.setRoll(Roles.ARTISTA.name());
+            } else {
+                throw new IllegalArgumentException("El rol debe ser CLIENTE o ARTISTA");
+
+            }
+        } catch (Exception e) {
+            user.setRoll(Roles.CLIENTE.name());
+        }
+
         user.setUsername(request.getUsername());
         usuarioCrudRepository.save(user);
         return "Usuario registrado correctamente";

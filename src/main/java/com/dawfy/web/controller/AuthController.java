@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dawfy.domain.dto.LoginDto;
+import com.dawfy.domain.dto.RegisterDto;
 import com.dawfy.services.UserSecurityService;
 import com.dawfy.web.config.JwtUtils;
-import com.dawfy.web.requestBody.usuario.UsuarioRequestBodyPOST;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UsuarioRequestBodyPOST request) {
+    public ResponseEntity<String> register(@RequestBody RegisterDto request) {
         String result = userSecurityService.register(request);
         if (result.equals("Usuario registrado correctamente")) {
             return ResponseEntity.ok(result);
