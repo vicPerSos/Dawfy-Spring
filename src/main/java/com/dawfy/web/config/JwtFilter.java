@@ -3,10 +3,7 @@ package com.dawfy.web.config;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     public boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/auth/login"); // No aplicar filtro a /auth/login
+        return path.equals("/auth/login")|| path.equals("/auth/register"); // No aplicar filtro a /auth/login
     }
 
     @Override
@@ -43,7 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         String jwt = authHeader.split(" ")[1].trim();
 
-        if (jwtUtils.isValid(jwt)) {
+        if (!jwtUtils.isValid(jwt)) {
             filterChain.doFilter(request, response);
             return;
         }

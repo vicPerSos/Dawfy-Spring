@@ -72,7 +72,7 @@ public class UserSecurityService implements UserDetailsService {
                 .password(usuario.getPassword())
                 .accountLocked(usuario.isCuentaBloqueada())
                 .disabled(!usuario.isHabilitada())
-                .roles(roles)
+                .authorities(roles)
                 .build();
 
     }
