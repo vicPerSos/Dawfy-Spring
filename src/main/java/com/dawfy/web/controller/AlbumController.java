@@ -81,7 +81,7 @@ public class AlbumController {
     @PutMapping("/{id}")
     public ResponseEntity<AlbumDTO> updateAlbum(@PathVariable int id, @RequestBody AlbumRequestBodyPUT albumRequestBody) {
         Album album = new Album();
-        album.setIdAlbum(id);
+        album.setId(id);
         album.setNombre(albumRequestBody.getNombre());
         album.setFechaLanzamiento(albumRequestBody.getFechaLanzamiento());
         try {

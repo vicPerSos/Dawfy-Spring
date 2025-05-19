@@ -29,7 +29,7 @@ public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idalbum")
-    private int idAlbum;
+    private int id;
     private String nombre;
     @Column(name = "fechalanzamiento")
     private LocalDate fechaLanzamiento;

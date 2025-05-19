@@ -1,0 +1,47 @@
+package com.dawfy.services;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.dawfy.persistence.entities.Cancion;
+import com.dawfy.persistence.repositories.CancionRepository;
+
+@Service
+public class CancionService {
+    @Autowired
+    private CancionRepository cancionRepository;
+
+    public List<Cancion> getAllCanciones() {
+        return (List<Cancion>) this.cancionRepository.findAll();
+    }
+
+    public List<Cancion> findByNombre(String nombre) {
+        return cancionRepository.findByNombre(nombre);
+    }
+
+    public Optional<Cancion> findById(int id) {
+        return cancionRepository.findById(id);
+    }
+
+    public Cancion save(Cancion cancion) {
+        return cancionRepository.save(cancion);
+    }
+
+    public Cancion update(Cancion cancion, int id) {
+        Cancion cancionBD = cancionRepository.findById(id).orElse(null);
+        if (cancionBD != null) {
+            cancionBD.setNombre(cancion.getNombre());
+            cancionBD.setDuracion(cancion.getDuracion());
+            cancionBD.setAlbum(cancion.getAlbum());
+        }
+        return cancionRepository.save(cancionBD);
+    }
+
+    public void delete(Cancion cancion) {
+        cancionRepository.delete(cancion);
+    }
+
+}
