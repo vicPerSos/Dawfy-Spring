@@ -68,6 +68,8 @@ public class CancionController {
         cancionNueva.setNombre(cancion.getNombre());
         cancionNueva.setDuracion(cancion.getDuracion());
         cancionNueva.setAlbum(this.albumService.getAlbumById(cancion.getAlbum()));
+        cancionNueva.setImagen(cancion.getImagen());
+        cancionNueva.setUrl(cancion.getUrl());
         this.cancionService.save(cancionNueva);
         return ResponseEntity.ok(CancionDTOMapper.toDTO(cancionNueva));
     }
@@ -85,6 +87,8 @@ public class CancionController {
         cancionActualizada.setNombre(cancion.getNombre());
         cancionActualizada.setDuracion(cancion.getDuracion());
         cancionActualizada.setAlbum(this.albumService.getAlbumById(cancion.getAlbum()));
+        cancionActualizada.setImagen(cancion.getImagen());
+        cancionActualizada.setUrl(cancion.getUrl());
         this.cancionService.update(cancionActualizada, id);
         return ResponseEntity.ok(CancionDTOMapper.toDTO(cancionActualizada));
     }

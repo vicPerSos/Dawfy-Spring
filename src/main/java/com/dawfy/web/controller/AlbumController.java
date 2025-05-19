@@ -74,12 +74,14 @@ public class AlbumController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+        album.setImagen(albumRequestBody.getImagen());
         Album nuevoAlbum = this.albumService.createAlbum(album);
         return ResponseEntity.ok(AlbumDTOMapper.toDTO(nuevoAlbum));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AlbumDTO> updateAlbum(@PathVariable int id, @RequestBody AlbumRequestBodyPUT albumRequestBody) {
+    public ResponseEntity<AlbumDTO> updateAlbum(@PathVariable int id,
+            @RequestBody AlbumRequestBodyPUT albumRequestBody) {
         Album album = new Album();
         album.setId(id);
         album.setNombre(albumRequestBody.getNombre());
@@ -89,6 +91,7 @@ public class AlbumController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+        album.setImagen(albumRequestBody.getImagen());
         Album albumActualizado = this.albumService.updateAlbum(id, album);
         if (albumActualizado != null) {
             return ResponseEntity.ok(AlbumDTOMapper.toDTO(albumActualizado));

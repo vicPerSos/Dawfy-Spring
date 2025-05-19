@@ -8,6 +8,7 @@ public class CancionRequestBodyPUT {
     private String nombre;
     private int duracion;
     private int album;
-    private String cancion;
+    private String imagen;
+    private String url;
 
 }

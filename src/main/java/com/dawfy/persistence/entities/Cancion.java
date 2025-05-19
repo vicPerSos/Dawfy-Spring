@@ -38,5 +38,6 @@ public class Cancion {
     @JsonIgnore
     private Album album;
     private String imagen;
+    private String url;
 
 }

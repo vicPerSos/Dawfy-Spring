@@ -10,5 +10,6 @@ public class AlbumRequestBodyPUT {
     private String nombre;
     private LocalDate fechaLanzamiento;
     private int artista;
+    private String imagen;
 
 }

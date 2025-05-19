@@ -36,6 +36,7 @@ public class CancionService {
             cancionBD.setNombre(cancion.getNombre());
             cancionBD.setDuracion(cancion.getDuracion());
             cancionBD.setAlbum(cancion.getAlbum());
+            cancionBD.setUrl(cancion.getUrl());
         }
         return cancionRepository.save(cancionBD);
     }

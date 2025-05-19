@@ -35,10 +35,11 @@ public class Album {
     private LocalDate fechaLanzamiento;
 
     @ManyToOne
-    @JoinColumn(name = "artista")
+    @JoinColumn(name = "idartista")
     @JsonIgnore
     private Artista artista;
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Cancion> cancion;
+    private String imagen;
 }

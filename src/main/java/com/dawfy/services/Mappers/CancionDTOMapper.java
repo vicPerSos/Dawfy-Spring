@@ -10,6 +10,7 @@ public class CancionDTOMapper {
         cancionDTO.setNombre(cancion.getNombre());
         cancionDTO.setDuracion(cancion.getDuracion());
         cancionDTO.setImagen(cancion.getImagen());
+        cancionDTO.setUrl(cancion.getUrl());
         return cancionDTO;
     }
 
