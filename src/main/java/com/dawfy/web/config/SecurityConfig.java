@@ -24,7 +24,6 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
-
                 http
                                 .csrf(csrf -> csrf.disable())
                                 .cors(cors -> cors.configurationSource(
@@ -40,7 +39,28 @@ public class SecurityConfig {
                                                                 "/cancion/**",
                                                                 "/categoria/**",
                                                                 "/colaboracion/**")
-                                                .hasAnyAuthority(Roles.CLIENTE.name(), Roles.ARTISTA.name())
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.POST,
+                                                                "/artista/**",
+                                                                "/albums/**",
+                                                                "/cancion/**",
+                                                                "/categoria/**",
+                                                                "/colaboracion/**")
+                                                .hasAuthority(Roles.ARTISTA.name())
+                                                .requestMatchers(HttpMethod.PUT,
+                                                                "/artista/**",
+                                                                "/albums/**",
+                                                                "/cancion/**",
+                                                                "/categoria/**",
+                                                                "/colaboracion/**")
+                                                .hasAuthority(Roles.ARTISTA.name())
+                                                .requestMatchers(HttpMethod.DELETE,
+                                                                "/artista/**",
+                                                                "/albums/**",
+                                                                "/cancion/**",
+                                                                "/categoria/**",
+                                                                "/colaboracion/**")
+                                                .hasAuthority(Roles.ARTISTA.name())
                                                 .anyRequest().hasAuthority(Roles.ADMIN.name()))
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

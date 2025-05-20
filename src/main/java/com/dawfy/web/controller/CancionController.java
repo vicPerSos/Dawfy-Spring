@@ -67,7 +67,7 @@ public class CancionController {
         Cancion cancionNueva = new Cancion();
         cancionNueva.setNombre(cancion.getNombre());
         cancionNueva.setDuracion(cancion.getDuracion());
-        cancionNueva.setAlbum(this.albumService.getAlbumById(cancion.getAlbum()));
+        cancionNueva.setIdAlbum(cancion.getAlbum());
         cancionNueva.setImagen(cancion.getImagen());
         cancionNueva.setUrl(cancion.getUrl());
         this.cancionService.save(cancionNueva);
