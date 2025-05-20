@@ -70,7 +70,10 @@ public class AlbumController {
         album.setNombre(albumRequestBody.getNombre());
         album.setFechaLanzamiento(albumRequestBody.getFechaLanzamiento());
         try {
-            album.setArtista(this.artistaService.getArtistaById(albumRequestBody.getArtista()).get());
+            if (!this.artistaService.existsArtista(albumRequestBody.getArtista())) {
+                throw new Exception("Artista no existe");
+            }
+            album.setIdArtista(albumRequestBody.getArtista());
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -87,7 +90,10 @@ public class AlbumController {
         album.setNombre(albumRequestBody.getNombre());
         album.setFechaLanzamiento(albumRequestBody.getFechaLanzamiento());
         try {
-            album.setArtista(this.artistaService.getArtistaById(albumRequestBody.getArtista()).get());
+            if (!this.artistaService.existsArtista(albumRequestBody.getArtista())) {
+                throw new Exception("Artista no existe");
+            }
+            album.setIdArtista(albumRequestBody.getArtista());
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

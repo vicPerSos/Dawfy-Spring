@@ -34,7 +34,8 @@ public class AlbumService {
         if (albumExistente != null) {
             albumExistente.setNombre(album.getNombre());
             albumExistente.setFechaLanzamiento(album.getFechaLanzamiento());
-            albumExistente.setArtista(album.getArtista());
+            albumExistente.setIdArtista(album.getIdArtista());
+            albumExistente.setImagen(album.getImagen());
             return this.albumRepository.save(albumExistente);
         }
         return null;
