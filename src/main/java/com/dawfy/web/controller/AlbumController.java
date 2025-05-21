@@ -22,6 +22,9 @@ import com.dawfy.services.Mappers.AlbumDTOMapper;
 import com.dawfy.web.requestBody.album.AlbumRequestBodyPOST;
 import com.dawfy.web.requestBody.album.AlbumRequestBodyPUT;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 @RestController
 @RequestMapping("/albums")
 public class AlbumController {
@@ -32,6 +35,8 @@ public class AlbumController {
     @Autowired
     private ArtistaService artistaService;
 
+    @Operation(summary = "Obtener todos los álbumes", description = "Retorna una lista de todos los álbumes disponibles")
+    @ApiResponse(responseCode = "200", description = "Lista de álbumes obtenida correctamente")
     @GetMapping
     public ResponseEntity<List<AlbumDTO>> getAllAlbums() {
         List<Album> albums = this.albumService.getAllAlbums();
