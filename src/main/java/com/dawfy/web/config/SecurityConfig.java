@@ -33,6 +33,32 @@ public class SecurityConfig {
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(requests -> requests
                                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/api/publico/info").permitAll()
+
+                                                // Reglas para /pais/**
+                                                .requestMatchers(HttpMethod.GET, "/pais/**").authenticated()
+                                                .requestMatchers(HttpMethod.POST, "/pais/**")
+                                                .hasAuthority(Roles.ADMIN.name())
+                                                .requestMatchers(HttpMethod.PUT, "/pais/**")
+                                                .hasAuthority(Roles.ADMIN.name())
+                                                .requestMatchers(HttpMethod.DELETE, "/pais/**")
+                                                .hasAuthority(Roles.ADMIN.name())
+
+                                                // Reglas para /cliente/** y /usuario/**
+                                                .requestMatchers(HttpMethod.GET, "/cliente/**", "/usuario/**")
+                                                .authenticated()
+                                                .requestMatchers(HttpMethod.POST, "/cliente/**", "/usuario/**")
+                                                .hasAnyAuthority(Roles.CLIENTE.name(), Roles.ARTISTA.name(),
+                                                                Roles.ADMIN.name())
+                                                .requestMatchers(HttpMethod.PUT, "/cliente/**", "/usuario/**")
+                                                .hasAnyAuthority(Roles.CLIENTE.name(), Roles.ARTISTA.name(),
+                                                                Roles.ADMIN.name())
+                                                .requestMatchers(HttpMethod.DELETE, "/cliente/**", "/usuario/**")
+                                                .hasAnyAuthority(Roles.CLIENTE.name(), Roles.ARTISTA.name(),
+                                                                Roles.ADMIN.name())
+
+                                                // Reglas existentes para /artista/**, /albums/**, etc.
                                                 .requestMatchers(HttpMethod.GET,
                                                                 "/artista/**",
                                                                 "/albums/**",
@@ -61,7 +87,7 @@ public class SecurityConfig {
                                                                 "/categoria/**",
                                                                 "/colaboracion/**")
                                                 .hasAuthority(Roles.ARTISTA.name())
-                                                .anyRequest().hasAuthority(Roles.ADMIN.name()))
+                                                .anyRequest().hasAuthority(Roles.ADMIN.name())) // Catch-all para ADMIN
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
                 return http.build();

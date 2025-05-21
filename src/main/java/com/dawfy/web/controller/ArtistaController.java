@@ -56,13 +56,13 @@ public class ArtistaController {
     }
 
     @GetMapping("/nombre/{nombre}")
-    public ResponseEntity<List<Artista>> getArtistasByNombre(@PathVariable String nombre) {
+    public ResponseEntity<List<ArtistaDTO>> getArtistasByNombre(@PathVariable String nombre) {
         List<Artista> artistas = this.artistaService.getArtistasByNombre(nombre);
         List<ArtistaDTO> artistasDTO = new ArrayList<>();
         for (Artista artista : artistas) {
             artistasDTO.add(ArtistaDTOMapper.mapper(artista));
         }
-        return ResponseEntity.ok(this.artistaService.getArtistasByNombre(nombre));
+        return ResponseEntity.ok(artistasDTO);
     }
 
     @GetMapping("/fecha/{idArtista}")

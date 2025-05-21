@@ -29,17 +29,18 @@ public class ArtistaService {
     }
 
     public Artista createArtista(Artista artista) {
-        String username = "";
-        for (int i = 0; i < 9; i++) {
-            int random = (int) (Math.random() * 10);
-            username += random;
-        }
+
         artista.setRoll(Roles.ARTISTA.toString());
         artista.setCuentaExpirada(false);
         artista.setCuentaBloqueada(false);
         artista.setCredencialExpirada(false);
         artista.setHabilitada(true);
-        artista.setUsername(username);
+        if (this.artistaCrudRepository.findByUsername(artista.getUsername()).isPresent()
+                && this.artistaCrudRepository.findByUsername(artista.getUsername()).get().getUsername()
+                        .equals(artista.getUsername())) {
+
+        }
+        artista.setUsername(artista.getUsername());
         return this.artistaCrudRepository.save(artista);
     }
 
@@ -84,8 +85,8 @@ public class ArtistaService {
         return this.artistaCrudRepository.findByCorreo(correo);
     }
 
-    public List<Artista> artistasPorPais(String nombre) {
-        return this.artistaCrudRepository.findByPais(nombre);
+    public List<Artista> artistasPorPais(String codigoIso) {
+        return this.artistaCrudRepository.findByPais(codigoIso);
     }
 
     public List<Artista> artistasPorCumple(LocalDate fechaNacimiento) {

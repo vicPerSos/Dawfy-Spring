@@ -11,11 +11,13 @@ import org.springframework.data.repository.query.Param;
 import com.dawfy.persistence.entities.Artista;
 
 public interface ArtistaCrudRepository extends CrudRepository<Artista, Integer> {
-    @Query("SELECT a FROM Artista a JOIN a.pais p WHERE p.codigo_iso = :nombre")
-    List<Artista> findByPais(@Param("nombre") String nombre);
+    @Query("SELECT a FROM Artista a JOIN a.pais p WHERE p.codigo_iso = :codigoIso")
+    List<Artista> findByPais(@Param("codigoIso") String codigoIso);
 
     Optional<Artista> findByCorreo(String correo);
 
     List<Artista> findByFechaNacimiento(LocalDate fechaNacimiento);
     List<Artista> findByNombreStartingWithIgnoreCase(String nombre);
+
+    Optional<Artista> findByUsername(String username);
 }
