@@ -24,7 +24,8 @@ public class SecurityConfig {
         }
 
         @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter, CorsConfigurationSource corsConfigurationSource) throws Exception {
+        public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter,
+                        CorsConfigurationSource corsConfigurationSource) throws Exception {
                 http
                                 .csrf(csrf -> csrf.disable())
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
@@ -33,10 +34,12 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(requests -> requests
                                                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                                                 // Permitir acceso a todas las rutas de Swagger sin autenticación
-                                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/swagger-ui/index.html", 
+                                                .requestMatchers("/swagger-ui.html", "/swagger-ui/**",
+                                                                "/swagger-ui/index.html",
                                                                 "/v3/api-docs/**", "/v3/api-docs.yaml",
-                                                                "/swagger-resources/**", "/webjars/**", "/api-docs/**").permitAll()
-                                                
+                                                                "/swagger-resources/**", "/webjars/**", "/api-docs/**")
+                                                .permitAll()
+
                                                 // Reglas para /pais/**
                                                 .requestMatchers(HttpMethod.GET, "/pais/**").authenticated()
                                                 .requestMatchers(HttpMethod.POST, "/pais/**")
@@ -45,7 +48,6 @@ public class SecurityConfig {
                                                 .hasAuthority(Roles.ADMIN.name())
                                                 .requestMatchers(HttpMethod.DELETE, "/pais/**")
                                                 .hasAuthority(Roles.ADMIN.name())
-
 
                                                 // Reglas para /cliente/** y /usuario/**
                                                 .requestMatchers(HttpMethod.GET, "/cliente/**", "/usuario/**")
