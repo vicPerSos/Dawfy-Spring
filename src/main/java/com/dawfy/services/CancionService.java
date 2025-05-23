@@ -7,23 +7,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Cancion;
-import com.dawfy.persistence.repositories.CancionRepository;
+import com.dawfy.persistence.repositories.CancionCrudRepository;
 
 @Service
 public class CancionService {
     @Autowired
-    private CancionRepository cancionRepository;
+    private CancionCrudRepository cancionRepository;
 
     public List<Cancion> getAllCanciones() {
-        return (List<Cancion>) this.cancionRepository.findAll();
+        return (List<Cancion>) this.cancionRepository.findAllWithCategoriaAndColaboradores();
     }
 
     public List<Cancion> findByNombre(String nombre) {
-        return cancionRepository.findByNombre(nombre);
+        return cancionRepository.findByNombreWithCategoriaAndColaboradores(nombre);
     }
 
     public Optional<Cancion> findById(int id) {
-        return cancionRepository.findById(id);
+        return cancionRepository.findByIdWithCategoriaAndColaboradores(id);
     }
 
     public Cancion save(Cancion cancion) {

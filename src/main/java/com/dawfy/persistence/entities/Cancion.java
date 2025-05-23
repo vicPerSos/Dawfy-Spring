@@ -43,18 +43,16 @@ public class Cancion {
     private String url;
 
     @ManyToMany
-    @JoinTable(
-        name = "cancioncategoria",
-        joinColumns = @JoinColumn(name = "cancion_id"),
-        inverseJoinColumns = @JoinColumn(name = "categoria_id")
+    @JoinTable(name = "cancioncategoria",
+            joinColumns = @JoinColumn(name = "cancion"),
+            inverseJoinColumns = @JoinColumn(name = "categoria")
     )
-    private List<Categoria> categorias;
+    private List<Categoria> categoria;
 
     @ManyToMany
-    @JoinTable(
-        name = "colaboracion",
-        joinColumns = @JoinColumn(name = "cancion_id"),
-        inverseJoinColumns = @JoinColumn(name = "artista_id")
+    @JoinTable(name = "colaboracion",
+            joinColumns = @JoinColumn(name = "cancion"), // <--- CORREGIDO según el ERD
+            inverseJoinColumns = @JoinColumn(name = "artista") // Esto ya estaba correcto según el error anterior y el ERD
     )
     private List<Artista> colaboradores;
 

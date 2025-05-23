@@ -11,13 +11,13 @@ public class AlbumDTOMapper {
         AlbumDTO albumDTO = new AlbumDTO();
         albumDTO.setNombre(album.getNombre());
         albumDTO.setFechaLanzamiento(album.getFechaLanzamiento());
-        
+
         if (album.getArtista() != null) {
             albumDTO.setArtista(album.getArtista().getNombre());
         } else {
             albumDTO.setArtista("Desconocido");
         }
-        
+
         // Verificar si la lista de canciones es nula
         if (album.getCancion() != null) {
             for (int i = 0; i < album.getCancion().size(); i++) {

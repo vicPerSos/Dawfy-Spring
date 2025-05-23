@@ -10,6 +10,6 @@ public class CancionDTO {
     private int duracion;
     private String imagen;
     private String url;
-    private List<String> categorias; // Nombres de las categorías
-    private List<String> colaboradores; // Nombres de los artistas colaboradores
+    private List<String> categorias;
+    private List<String> colaboradores;
 }
