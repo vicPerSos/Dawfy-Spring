@@ -25,12 +25,26 @@ public class UsuarioService {
     }
 
     public Usuario saveUsuario(Usuario usuario) {
-        usuario.setRoll(Roles.ADMIN.toString());
+        // Validar que el username no sea nulo o vacío
+        if (usuario.getUsername() == null || usuario.getUsername().trim().isEmpty()) {
+            throw new IllegalArgumentException("El username es requerido.");
+        }
+
+        // Verificar si ya existe un usuario con ese username
+        Optional<Usuario> existingUser = this.usuarioCrudRepository.findByUsername(usuario.getUsername());
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Ya existe un usuario con el username: " + usuario.getUsername());
+        }
+
+        // Asignar valores por defecto (si aplica para todos los usuarios nuevos)
+        // Si el rol debe venir del request o tener otra lógica, ajustar aquí.
+        usuario.setRoll(Roles.ADMIN.toString()); // Cambiado a USER como ejemplo, ajustar si es necesario
         usuario.setCuentaExpirada(false);
         usuario.setCuentaBloqueada(false);
         usuario.setCredencialExpirada(false);
         usuario.setHabilitada(true);
-        usuario.setUsername(usuario.getUsername());
+        // La línea usuario.setUsername(usuario.getUsername()); era redundante y se
+        // elimina.
         return this.usuarioCrudRepository.save(usuario);
     }
 

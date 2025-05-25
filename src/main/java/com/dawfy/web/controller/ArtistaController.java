@@ -148,6 +148,7 @@ public class ArtistaController {
                 return ResponseEntity.badRequest().build();
             }
             artistaNuevo.setPassword(artista.getPassword());
+            artistaNuevo.setUsername(artista.getUsername());
             return ResponseEntity.ok(ArtistaDTOMapper.mapper(this.artistaService.createArtista(artistaNuevo)));
         } catch (Exception e) {
             System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());

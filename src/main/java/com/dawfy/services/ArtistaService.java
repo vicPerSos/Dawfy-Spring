@@ -29,18 +29,23 @@ public class ArtistaService {
     }
 
     public Artista createArtista(Artista artista) {
+        try {
+            if (artista.getUsername() == null || artista.getUsername().trim().isEmpty()) {
+                throw new Exception("Username requerido");
+            }
 
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        Optional<Artista> existingUser = this.artistaCrudRepository.findByUsername(artista.getUsername());
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("Ya existe un usuario con el username: " + artista.getUsername());
+        }
         artista.setRoll(Roles.ARTISTA.toString());
         artista.setCuentaExpirada(false);
         artista.setCuentaBloqueada(false);
         artista.setCredencialExpirada(false);
         artista.setHabilitada(true);
-        if (this.artistaCrudRepository.findByUsername(artista.getUsername()).isPresent()
-                && this.artistaCrudRepository.findByUsername(artista.getUsername()).get().getUsername()
-                        .equals(artista.getUsername())) {
-
-        }
-        artista.setUsername(artista.getUsername());
         return this.artistaCrudRepository.save(artista);
     }
 
@@ -53,6 +58,7 @@ public class ArtistaService {
         artistaExistente.setPais(artista.getPais());
         artistaExistente.setFoto(artista.getFoto());
         artistaExistente.setPassword(artista.getPassword());
+        artistaExistente.setUsername(artista.getUsername());
 
         return this.artistaCrudRepository.save(artistaExistente);
     }

@@ -149,6 +149,10 @@ public class UsuarioController {
                 return ResponseEntity.badRequest().build();
             }
             usuarioNuevo.setPassword(usuario.getPassword());
+            if (usuario.getUsername() == null || usuario.getUsername().trim().isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+            usuarioNuevo.setUsername(usuario.getUsername());
             return ResponseEntity.ok(UsuarioDtoMapper.mapper(this.usuarioService.saveUsuario(usuarioNuevo)));
         } catch (Exception e) {
             System.out.println("La peticion no realizó correctamente. Error: " + e.getMessage());
