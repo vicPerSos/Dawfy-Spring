@@ -25,17 +25,12 @@ public class ClienteService {
     }
 
     public void saveCliente(Cliente cliente) {
-        String username = "";
-        for (int i = 0; i < 9; i++) {
-            int random = (int) (Math.random() * 10);
-            username += random;
-        }
         cliente.setRoll(Roles.CLIENTE.toString());
         cliente.setCuentaExpirada(false);
         cliente.setCuentaBloqueada(false);
         cliente.setCredencialExpirada(false);
         cliente.setHabilitada(true);
-        cliente.setUsername(username);
+        cliente.setUsername(cliente.getUsername());
         this.clienteCrudRepository.save(cliente);
     }
 
@@ -98,5 +93,9 @@ public class ClienteService {
 
     public List<Cliente> clientePorNombre(String nombre) {
         return this.clienteCrudRepository.findByNombreStartingWithIgnoreCase(nombre);
+    }
+
+    public boolean existsByUsername(String username) {
+        return this.clienteCrudRepository.existsByUsername(username);
     }
 }

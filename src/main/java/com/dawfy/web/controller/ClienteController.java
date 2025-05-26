@@ -35,8 +35,6 @@ public class ClienteController {
     @Autowired
     private PaisService paisService;
 
-
-
     @GetMapping
     private ResponseEntity<List<ClienteDTO>> getClientes() {
 
@@ -141,7 +139,6 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<ClienteDTO> crearCliente(@RequestBody ClienteRequestBodyPOST cliente) {
         try {
-
             Cliente clienteNuevo = new Cliente();
             clienteNuevo.setNombre(cliente.getNombre());
             clienteNuevo.setCorreo(cliente.getCorreo());
@@ -149,10 +146,16 @@ public class ClienteController {
             clienteNuevo.setPais(this.paisService.findById(cliente.getPais()));
             clienteNuevo.setFoto(cliente.getFoto() != null ? cliente.getFoto()
                     : "http://i.scdn.co/image/ab6761610000517476b4b22f78593911c60e7193");
-            if (cliente.getPassword() == null) {
+            if (cliente.getPassword().equals(null)) {
                 return ResponseEntity.badRequest().build();
             }
+
+            if (this.clienteService.existsByUsername(cliente.getUsername())) {
+                return ResponseEntity.badRequest().build();
+            }
+
             clienteNuevo.setPassword(cliente.getPassword());
+            clienteNuevo.setUsername(cliente.getUsername());
             this.clienteService.saveCliente(clienteNuevo);
             return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
         } catch (Exception e) {
@@ -187,6 +190,10 @@ public class ClienteController {
             return ResponseEntity.badRequest().build();
         }
         clienteNuevo.setPassword(cliente.getPassword());
+        if(this.clienteService.existsByUsername(cliente.getUsername())|| cliente.getUsername() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        clienteNuevo.setUsername(cliente.getUsername());
         this.clienteService.updateCliente(id, clienteNuevo);
         return ResponseEntity.ok(ClienteDTOMapper.mapper(clienteNuevo));
     }

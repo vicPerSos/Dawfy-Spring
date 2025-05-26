@@ -13,4 +13,5 @@ public class ClienteRequestBodyPOST {
     private String pais;
     private String foto;
     private String password;
+    private String username;
 }

@@ -8,6 +8,7 @@ import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.lang.NonNull;
 
 @Component
 public class SpotifyAuthInterceptor implements ClientHttpRequestInterceptor {
@@ -15,6 +16,7 @@ public class SpotifyAuthInterceptor implements ClientHttpRequestInterceptor {
     private SpotifyTokenManager tokenManager;
 
     @Override
+    @NonNull
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
             throws IOException {
         request.getHeaders().setBearerAuth(tokenManager.getValidToken());

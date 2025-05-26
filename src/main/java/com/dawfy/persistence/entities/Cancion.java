@@ -25,35 +25,31 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Cancion {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idcancion")
-    private int id;
-    private String nombre;
-    private int duracion;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "idcancion")
+        private int id;
+        private String nombre;
+        private int duracion;
 
-    @Column(name = "id_album")
-    private int idAlbum;
+        @Column(name = "id_album")
+        private int idAlbum;
 
-    @ManyToOne
-    @JoinColumn(name = "id_album", referencedColumnName = "idalbum", insertable = false, updatable = false)
-    @JsonIgnore
-    private Album album;
-    private String imagen;
-    private String url;
+        @ManyToOne
+        @JoinColumn(name = "id_album", referencedColumnName = "idalbum", insertable = false, updatable = false)
+        @JsonIgnore
+        private Album album;
+        private String imagen;
+        private String url;
 
-    @ManyToMany
-    @JoinTable(name = "cancioncategoria",
-            joinColumns = @JoinColumn(name = "cancion"),
-            inverseJoinColumns = @JoinColumn(name = "categoria")
-    )
-    private List<Categoria> categoria;
+        @ManyToMany
+        @JoinTable(name = "cancioncategoria", joinColumns = @JoinColumn(name = "cancion"), inverseJoinColumns = @JoinColumn(name = "categoria"))
+        private List<Categoria> categoria;
 
-    @ManyToMany
-    @JoinTable(name = "colaboracion",
-            joinColumns = @JoinColumn(name = "cancion"), // <--- CORREGIDO según el ERD
-            inverseJoinColumns = @JoinColumn(name = "artista") // Esto ya estaba correcto según el error anterior y el ERD
-    )
-    private List<Artista> colaboradores;
+        @ManyToMany
+        @JoinTable(name = "colaboracion", joinColumns = @JoinColumn(name = "cancion"), inverseJoinColumns = @JoinColumn(name = "artista")
+
+        )
+        private List<Artista> colaboradores;
 
 }

@@ -14,6 +14,7 @@ public class SpotifyService {
     private RestTemplate restTemplate;
 
     public JsonNode search(String query) {
+        @SuppressWarnings("deprecation")
         String url = UriComponentsBuilder.fromHttpUrl("https://api.spotify.com/v1/search")
                 .queryParam("q", query)
                 .queryParam("type", "track,album,artist")
