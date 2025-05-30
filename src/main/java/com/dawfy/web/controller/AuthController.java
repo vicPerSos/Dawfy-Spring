@@ -29,7 +29,7 @@ public class AuthController {
     private UserSecurityService userSecurityService;
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
         UsernamePasswordAuthenticationToken login = new UsernamePasswordAuthenticationToken(loginDto.getUsername(),
                 loginDto.getPassword());
 
@@ -38,7 +38,7 @@ public class AuthController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String role = userDetails.getAuthorities().iterator().next().getAuthority();
             String jwt = this.jwtUtils.create(loginDto.getUsername(), role);
-            return ResponseEntity.ok().header("Authorization", jwt).build();
+            return ResponseEntity.ok(jwt);
 
         } else {
             return ResponseEntity.badRequest().build();
