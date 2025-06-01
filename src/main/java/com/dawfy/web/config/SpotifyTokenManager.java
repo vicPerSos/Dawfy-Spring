@@ -34,6 +34,7 @@ public class SpotifyTokenManager {
         return accessToken;
     }
 
+    @SuppressWarnings("null")
     private void renewToken() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

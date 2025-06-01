@@ -30,11 +30,12 @@ public class CancionService {
         return cancionRepository.save(cancion);
     }
 
+    @SuppressWarnings("null")
     public Cancion update(Cancion cancion, int id) {
         Cancion cancionBD = cancionRepository.findById(id).orElse(null);
         if (cancionBD != null) {
             cancionBD.setNombre(cancion.getNombre());
-            cancionBD.setDuracion(cancion.getDuracion());
+            cancionBD.setDuracion(cancion.getDuracion());   
             cancionBD.setAlbum(cancion.getAlbum());
             cancionBD.setUrl(cancion.getUrl());
         }
