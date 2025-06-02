@@ -23,7 +23,7 @@ public class UserSecurityService implements UserDetailsService {
     private PaisService paisService;
 
     public String register(RegisterDto request) {
-        if (usuarioCrudRepository.existsByUsername(request.getUsername())) {
+        if (usuarioCrudRepository.findByUsername(request.getUsername()).isPresent()) {
             return "Nombre de usuario ya en uso";
         }
         Usuario user = new Usuario();

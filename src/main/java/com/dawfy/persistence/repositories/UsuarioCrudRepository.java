@@ -25,4 +25,7 @@ public interface UsuarioCrudRepository extends CrudRepository<Usuario, Integer> 
     Optional<Usuario> findByUsername(String username);
 
     boolean existsByUsername(String username);
+
+    @Query("SELECT u FROM Usuario u WHERE u.username = :username")
+    Usuario findUsername(String username);
 }

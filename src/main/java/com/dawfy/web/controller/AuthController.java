@@ -46,7 +46,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto request) {
+    public ResponseEntity<?> register(@RequestBody RegisterDto request) {
+        System.out.println("Register request: " + request);
         String result = userSecurityService.register(request);
         if (result.equals("Usuario registrado correctamente")) {
             return ResponseEntity.ok(result);
