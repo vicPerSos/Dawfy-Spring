@@ -68,7 +68,8 @@ public class SecurityConfig {
                                                                 "/albums/**",
                                                                 "/cancion/**",
                                                                 "/categoria/**",
-                                                                "/colaboracion/**")
+                                                                "/colaboracion/**",
+                                                                "/search/**")
                                                 .authenticated()
                                                 .requestMatchers(HttpMethod.POST,
                                                                 "/artista/**",

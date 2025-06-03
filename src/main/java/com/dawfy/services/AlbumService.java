@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dawfy.persistence.entities.Album;
-import com.dawfy.persistence.repositories.AlbumRepository;
+import com.dawfy.persistence.repositories.AlbumCrudRepository;
 
 @Service
 public class AlbumService {
     @Autowired
-    private AlbumRepository albumRepository;
+    private AlbumCrudRepository albumRepository;
 
     public List<Album> getAllAlbums() {
         return (List<Album>) this.albumRepository.findAll();

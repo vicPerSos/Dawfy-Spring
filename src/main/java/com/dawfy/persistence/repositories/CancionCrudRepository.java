@@ -18,4 +18,6 @@ public interface CancionCrudRepository extends CrudRepository<Cancion, Integer> 
 
     @Query("SELECT DISTINCT c FROM Cancion c LEFT JOIN FETCH c.categoria LEFT JOIN FETCH c.colaboradores")
     List<Cancion> findAllWithCategoriaAndColaboradores();
+
+    List<Cancion> findByNombreStartingWithIgnoreCase(String nombre);
 }
