@@ -22,6 +22,15 @@ public class SpotifyService {
         return restTemplate.getForObject(url, JsonNode.class);
     }
 
+    public JsonNode searchArtista(String query) {
+        @SuppressWarnings("deprecation")
+        String url = UriComponentsBuilder.fromHttpUrl("https://api.spotify.com/v1/search")
+                .queryParam("q", query)
+                .queryParam("type", "artist")
+                .toUriString();
+        return restTemplate.getForObject(url, JsonNode.class);
+    }
+
     public JsonNode getTrack(String trackId) {
         String url = "https://api.spotify.com/v1/tracks/" + trackId;
         return restTemplate.getForObject(url, JsonNode.class);

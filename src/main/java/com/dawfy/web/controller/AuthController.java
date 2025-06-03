@@ -1,5 +1,7 @@
 package com.dawfy.web.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dawfy.domain.dto.LoginDto;
 import com.dawfy.domain.dto.RegisterDto;
+import com.dawfy.persistence.entities.Artista;
+import com.dawfy.services.SpotifyService;
 import com.dawfy.services.UserSecurityService;
 import com.dawfy.web.config.JwtUtils;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,6 +32,9 @@ public class AuthController {
 
     @Autowired
     private UserSecurityService userSecurityService;
+
+    @Autowired
+    private SpotifyService spotifyService;
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
@@ -53,6 +61,16 @@ public class AuthController {
             return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+    @PostMapping("/artistInfo")
+    public ResponseEntity<JsonNode> getArtistInfo(@RequestBody String artistName) {
+        JsonNode artistInfo = spotifyService.searchArtista(artistName);
+        if (artistInfo != null && !artistInfo.isEmpty()) {
+            return ResponseEntity.ok(artistInfo);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
