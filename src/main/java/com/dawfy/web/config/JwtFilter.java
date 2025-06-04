@@ -27,7 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     public boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.equals("/auth/login")|| path.equals("/auth/register"); // No aplicar filtro a /auth/login
+        return path.equals("/auth/login") || path.equals("/auth/register"); // No aplicar filtro a /auth/login
     }
 
     @Override
@@ -46,8 +46,8 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         String username = jwtUtils.getUsername(jwt);
         User user = (User) userDetailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(),
-                user.getPassword(), user.getAuthorities());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user,
+                null, user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(token);
         filterChain.doFilter(request, response);
     }

@@ -16,4 +16,6 @@ public class AlbumDTO {
 
     private List<CancionDTO> cancion;
 
+    private String imagen;
+
 }
