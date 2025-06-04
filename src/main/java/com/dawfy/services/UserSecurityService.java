@@ -34,7 +34,7 @@ public class UserSecurityService implements UserDetailsService {
         if (usuarioCrudRepository.findByUsername(request.getUsername()).isPresent()) {
             return "Nombre de usuario ya en uso";
         }
-        if (request.getRoll() == Roles.ARTISTA.name()) {
+        if (request.getRoll().equals(Roles.ARTISTA.name())) {
             Artista user = new Artista();
             user.setNombre(request.getNombre());
             user.setCorreo(request.getCorreo());
