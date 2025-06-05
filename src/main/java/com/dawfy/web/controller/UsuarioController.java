@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +46,21 @@ public class UsuarioController {
             usuariosDTO.add(UsuarioDtoMapper.mapper(usuario));
         }
         return ResponseEntity.ok(usuariosDTO);
+    }
+
+    @GetMapping("/role")
+    public ResponseEntity<String> getUserRole(Authentication authentication) {
+        if (authentication == null || authentication.getAuthorities() == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Sin autorización");
+        }
+        // Extrae el primer rol (puedes adaptarlo si hay más de uno)
+        String role = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(auth -> auth.equals("ARTISTA") || auth.equals("CLIENTE") || auth.equals("ROLE_ARTISTA")
+                        || auth.equals("ROLE_CLIENTE"))
+                .findFirst()
+                .orElse("SIN_ROL");
+        return ResponseEntity.ok(role);
     }
 
     @GetMapping("/{idUsuario}")
@@ -175,7 +193,8 @@ public class UsuarioController {
         usuarioNuevo.setCorreo(usuario.getCorreo());
         usuarioNuevo.setPais(this.paisService.findById(usuario.getPais()));
         usuarioNuevo.setFechaNacimiento(usuario.getFechaNacimiento());
-        usuarioNuevo.setFoto(usuario.getFoto() != null ? usuario.getFoto() : this.usuarioService.getUsuarioById(idUsuario).get().getFoto());
+        usuarioNuevo.setFoto(usuario.getFoto() != null ? usuario.getFoto()
+                : this.usuarioService.getUsuarioById(idUsuario).get().getFoto());
         if (usuario.getPassword() == null) {
             return ResponseEntity.badRequest().build();
         }
