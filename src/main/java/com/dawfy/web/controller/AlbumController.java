@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dawfy.persistence.entities.Album;
+import com.dawfy.persistence.entities.Artista;
 import com.dawfy.services.AlbumService;
 import com.dawfy.services.ArtistaService;
+import com.dawfy.services.UserSecurityService;
 import com.dawfy.services.DTOs.AlbumDTO;
 import com.dawfy.services.Mappers.AlbumDTOMapper;
 import com.dawfy.web.requestBody.album.AlbumRequestBodyPOST;
@@ -34,12 +37,26 @@ public class AlbumController {
 
     @Autowired
     private ArtistaService artistaService;
+    @Autowired
+    private UserSecurityService userSecurityService;
 
     @Operation(summary = "Obtener todos los álbumes", description = "Retorna una lista de todos los álbumes disponibles")
     @ApiResponse(responseCode = "200", description = "Lista de álbumes obtenida correctamente")
     @GetMapping
     public ResponseEntity<List<AlbumDTO>> getAllAlbums() {
         List<Album> albums = this.albumService.getAllAlbums();
+        List<AlbumDTO> albumDTOs = new ArrayList<>();
+        for (Album album : albums) {
+            albumDTOs.add(AlbumDTOMapper.toDTO(album));
+        }
+        return ResponseEntity.ok(albumDTOs);
+    }
+
+    @GetMapping("/artista/{idArtista}")
+    public ResponseEntity<List<AlbumDTO>> getAlbumsByArtista(Authentication authentication) {
+        String username = authentication.getName();
+        Artista artista = (Artista) this.userSecurityService.loadUserByUsername(username);
+        List<Album> albums = this.albumService.getAlbumsByArtistaId(artista.getId());
         List<AlbumDTO> albumDTOs = new ArrayList<>();
         for (Album album : albums) {
             albumDTOs.add(AlbumDTOMapper.toDTO(album));
