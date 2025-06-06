@@ -107,4 +107,9 @@ public class ArtistaService {
         return this.artistaCrudRepository.findById(id).get().getFechaNacimiento();
     }
 
+    public Artista artistaByUsername(String username) {
+        return this.artistaCrudRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("No existe un artista con el username: " + username));
+    }
+
 }

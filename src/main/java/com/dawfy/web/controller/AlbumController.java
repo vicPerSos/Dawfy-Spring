@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,10 +53,11 @@ public class AlbumController {
         return ResponseEntity.ok(albumDTOs);
     }
 
-    @GetMapping("/artista/{idArtista}")
+    @GetMapping("/artista")
     public ResponseEntity<List<AlbumDTO>> getAlbumsByArtista(Authentication authentication) {
         String username = authentication.getName();
-        Artista artista = (Artista) this.userSecurityService.loadUserByUsername(username);
+        Artista artista = this.artistaService.artistaByUsername(username);
+
         List<Album> albums = this.albumService.getAlbumsByArtistaId(artista.getId());
         List<AlbumDTO> albumDTOs = new ArrayList<>();
         for (Album album : albums) {
