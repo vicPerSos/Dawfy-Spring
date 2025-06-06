@@ -12,4 +12,5 @@ public class ArtistaDTO {
     private LocalDate fechaNacimiento;
     private String pais;
     private String foto;
+    private String idArtistaSpoti;
 }

@@ -59,6 +59,7 @@ public class ArtistaService {
         artistaExistente.setFoto(artista.getFoto());
         artistaExistente.setPassword(artista.getPassword());
         artistaExistente.setUsername(artista.getUsername());
+        artistaExistente.setIdArtistaSpoti(artista.getIdArtistaSpoti());
 
         return this.artistaCrudRepository.save(artistaExistente);
     }

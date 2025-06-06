@@ -19,6 +19,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "Artista")
 public class Artista extends Usuario {
+    private String idArtistaSpoti;
     @JsonIgnore
     @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Album> albums;

@@ -15,5 +15,6 @@ public class ArtistaRequestBodyPUT {
     private String foto;
     private String password;
     private String username;
+    private String idArtistaSpoti;
 
 }
