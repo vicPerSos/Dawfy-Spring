@@ -9,6 +9,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,6 +55,12 @@ public class ArtistaController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ArtistaDTOMapper.mapper(artista.get()));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ArtistaDTO> me(Authentication authentication) {
+        Artista artista = this.artistaService.artistaByUsername(authentication.getName());
+        return ResponseEntity.ok(ArtistaDTOMapper.mapper(artista));
     }
 
     @GetMapping("/nombre/{nombre}")

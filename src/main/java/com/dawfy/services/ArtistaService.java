@@ -112,5 +112,6 @@ public class ArtistaService {
         return this.artistaCrudRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("No existe un artista con el username: " + username));
     }
+    
 
 }

@@ -22,6 +22,7 @@ import com.dawfy.services.DTOs.CancionDTO;
 import com.dawfy.services.Mappers.CancionDTOMapper;
 import com.dawfy.web.requestBody.cancion.CancionRequestBodyPUT;
 import com.dawfy.web.requestBody.cancion.CancionRequestBodyPost;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @RestController
 @RequestMapping("/cancion")
@@ -57,6 +58,16 @@ public class CancionController {
         Optional<Cancion> cancion = this.cancionService.findById(id);
         if (cancion.isPresent()) {
             return ResponseEntity.ok(Optional.of(CancionDTOMapper.toDTO(cancion.get())));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/album/{idAlbum}")
+    public ResponseEntity<JsonNode> getAllCancionesFromAlbum(@PathVariable String idAlbum) {
+        JsonNode canciones = this.cancionService.getAllCancionesFromSpotify(idAlbum);
+        if (canciones != null) {
+            return ResponseEntity.ok(canciones);
         } else {
             return ResponseEntity.notFound().build();
         }

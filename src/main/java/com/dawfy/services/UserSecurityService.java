@@ -53,6 +53,7 @@ public class UserSecurityService implements UserDetailsService {
             user.setCredencialExpirada(false);
             user.setRoll(Roles.ARTISTA.name());
             user.setUsername(request.getUsername());
+            user.setIdArtistaSpoti(request.getSpotifyId());
             this.artistaCrudRepository.save(user);
         } else {
             Cliente user = new Cliente();

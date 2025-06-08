@@ -14,4 +14,5 @@ public class RegisterDto {
     private String password;
     private String username;
     private String roll;
+    private String spotifyId;
 }
