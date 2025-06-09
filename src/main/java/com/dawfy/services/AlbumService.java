@@ -65,8 +65,10 @@ public class AlbumService {
         return this.albumRepository.findByArtistaId(artistaId);
     }
 
-    public List<Album> getAlbumsByArtistaNombre(String artistaNombre) {
-        return this.albumRepository.findByNombreStartingWithIgnoreCase(artistaNombre);
+    
+
+    public List<Album> getAlbumsByArtistaUsername(String artistaUsername) {
+        return this.albumRepository.findByArtistaUsername(artistaUsername);
     }
 
 }

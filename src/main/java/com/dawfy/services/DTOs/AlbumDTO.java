@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class AlbumDTO {
+    private int id;
 
     private String nombre;
 

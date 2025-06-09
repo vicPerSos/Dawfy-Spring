@@ -66,6 +66,19 @@ public class AlbumController {
         return ResponseEntity.ok(albums);
     }
 
+    @GetMapping("/artistaUsername")
+    public ResponseEntity<List<AlbumDTO>> getAlbumsByUsername(Authentication authentication) {
+        String username = authentication.getName();
+        Artista artista = this.artistaService.artistaByUsername(username);
+
+        List<Album> albumes = this.albumService.getAlbumsByArtistaUsername(artista.getNombre());
+        List<AlbumDTO> albums = new ArrayList<>();
+        for (Album album : albumes) {
+            albums.add(AlbumDTOMapper.toDTO(album));
+        }
+        return ResponseEntity.ok(albums);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<AlbumDTO> getAlbumById(@PathVariable int id) {
         Album album = this.albumService.getAlbumById(id);
