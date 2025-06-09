@@ -23,11 +23,11 @@ public class CancionService {
     }
 
     public List<Cancion> findByNombre(String nombre) {
-        return cancionRepository.findByNombreWithCategoriaAndColaboradores(nombre);
+        return cancionRepository.findByNombreWithColaboradores(nombre);
     }
 
     public Optional<Cancion> findById(int id) {
-        return cancionRepository.findByIdWithCategoriaAndColaboradores(id);
+        return cancionRepository.findByIdWithColaboradores(id);
     }
 
     public Cancion save(Cancion cancion) {

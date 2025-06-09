@@ -42,9 +42,6 @@ public class Cancion {
         private String imagen;
         private String url;
 
-        @ManyToMany
-        @JoinTable(name = "cancioncategoria", joinColumns = @JoinColumn(name = "cancion"), inverseJoinColumns = @JoinColumn(name = "categoria"))
-        private List<Categoria> categoria;
 
         @ManyToMany
         @JoinTable(name = "colaboracion", joinColumns = @JoinColumn(name = "cancion"), inverseJoinColumns = @JoinColumn(name = "artista")

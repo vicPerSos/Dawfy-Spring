@@ -4,7 +4,6 @@ import java.util.stream.Collectors;
 
 import com.dawfy.persistence.entities.Artista;
 import com.dawfy.persistence.entities.Cancion;
-import com.dawfy.persistence.entities.Categoria;
 import com.dawfy.services.DTOs.CancionDTO;
 
 public class CancionDTOMapper {
@@ -16,12 +15,6 @@ public class CancionDTOMapper {
         cancionDto.setUrl(cancion.getUrl());
 
         // Mapear categorías
-        if (cancion.getCategoria() != null) {
-            cancionDto.setCategorias(
-                    cancion.getCategoria().stream()
-                            .map(Categoria::getNombre)
-                            .collect(Collectors.toList()));
-        }
 
         // Mapear colaboradores
         if (cancion.getColaboradores() != null) {
