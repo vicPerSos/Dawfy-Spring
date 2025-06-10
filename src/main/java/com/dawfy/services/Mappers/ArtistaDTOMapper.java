@@ -15,6 +15,14 @@ public class ArtistaDTOMapper {
         artistaDto.setFechaNacimiento(artista.getFechaNacimiento());
         artistaDto.setPais(artista.getPais().getNombre());
         artistaDto.setFoto(artista.getFoto());
+        artistaDto.setIdArtistaSpoti(artista.getIdArtistaSpoti());
+        if (artista.getGeneros() != null) {
+            artistaDto.setCategorias(artista.getGeneros().stream()
+                    .map(genero -> genero.getCategoria().getNombre())
+                    .collect(java.util.stream.Collectors.toSet()));
+        } else {
+            artistaDto.setCategorias(java.util.Collections.emptySet());
+        }
         return artistaDto;
     }
 

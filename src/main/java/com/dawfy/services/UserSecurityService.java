@@ -1,5 +1,8 @@
 package com.dawfy.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,11 +14,15 @@ import org.springframework.stereotype.Service;
 import com.dawfy.domain.dto.RegisterDto;
 import com.dawfy.enums.Roles;
 import com.dawfy.persistence.entities.Artista;
+import com.dawfy.persistence.entities.Categoria;
 import com.dawfy.persistence.entities.Cliente;
+import com.dawfy.persistence.entities.Genero;
+import com.dawfy.persistence.entities.GeneroId;
 import com.dawfy.persistence.entities.Usuario;
 import com.dawfy.persistence.repositories.ArtistaCrudRepository;
 import com.dawfy.persistence.repositories.ClienteCrudRepository;
 import com.dawfy.persistence.repositories.UsuarioCrudRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class UserSecurityService implements UserDetailsService {
@@ -29,6 +36,10 @@ public class UserSecurityService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private PaisService paisService;
+    @Autowired
+    private CategoriaService categoriaService;
+    @Autowired
+    private SpotifyService spotifyService;
 
     public String register(RegisterDto request) {
         if (usuarioCrudRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -54,7 +65,48 @@ public class UserSecurityService implements UserDetailsService {
             user.setRoll(Roles.ARTISTA.name());
             user.setUsername(request.getUsername());
             user.setIdArtistaSpoti(request.getSpotifyId());
+
             this.artistaCrudRepository.save(user);
+
+            Artista artista = this.artistaCrudRepository.findByUsername(request.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("Artista no encontrado"));
+            JsonNode artistaSpoti = this.spotifyService.getArtist(artista.getIdArtistaSpoti());
+            System.out.println("Artista Spoti: " + artistaSpoti);
+            List<String> genres = new ArrayList<>();
+
+            JsonNode genresNode = artistaSpoti.get("genres");
+            if (genresNode != null && genresNode.isArray()) {
+                for (JsonNode genreNode : genresNode) {
+                    genres.add(genreNode.asText());
+                }
+            }
+            List<Categoria> generos = new ArrayList();
+            for (String g : genres) {
+                if (!this.categoriaService.existsByNombre(g)) {
+                    Categoria c = new Categoria();
+                    c.setNombre(g);
+                    generos.add(this.categoriaService.createCategoria(c));
+                } else {
+                    generos.add(this.categoriaService.getCategoriasByNombre(g).get(0));
+                }
+
+            }
+            List<Genero> listaGenero = new ArrayList<>();
+            for (Categoria cat : generos) {
+                Genero genero = new Genero();
+                genero.setCategoria(cat);
+                genero.setArtista(artista);
+
+                GeneroId generoId = new GeneroId();
+                generoId.setArtista(artista.getId()); // Usa el ID real del artista
+                generoId.setCategoria(cat.getId()); // Usa el ID real de la categoría
+                genero.setId(generoId);
+
+                listaGenero.add(genero);
+            }
+            artista.setGeneros(listaGenero);
+            this.artistaCrudRepository.save(artista);
+
         } else {
             Cliente user = new Cliente();
             user.setNombre(request.getNombre());

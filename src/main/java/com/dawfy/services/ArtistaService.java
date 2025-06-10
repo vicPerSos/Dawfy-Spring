@@ -1,6 +1,7 @@
 package com.dawfy.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,12 +10,23 @@ import org.springframework.stereotype.Service;
 
 import com.dawfy.enums.Roles;
 import com.dawfy.persistence.entities.Artista;
+import com.dawfy.persistence.entities.Categoria;
+import com.dawfy.persistence.entities.Genero;
 import com.dawfy.persistence.repositories.ArtistaCrudRepository;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class ArtistaService {
     @Autowired
+    private final SpotifyService spotifyService;
+    @Autowired
     private ArtistaCrudRepository artistaCrudRepository;
+    @Autowired
+    private CategoriaService categoriaService;
+
+    ArtistaService(SpotifyService spotifyService) {
+        this.spotifyService = spotifyService;
+    }
 
     public List<Artista> getAllArtistas() {
         return (List<Artista>) this.artistaCrudRepository.findAll();
@@ -41,6 +53,27 @@ public class ArtistaService {
         if (existingUser.isPresent()) {
             throw new IllegalArgumentException("Ya existe un usuario con el username: " + artista.getUsername());
         }
+        JsonNode artistaSpoti = this.spotifyService.getArtist(artista.getIdArtistaSpoti());
+        String[] genres = artistaSpoti.get("genres").asText().split(",");
+        List<Categoria> generos = new ArrayList();
+        for (String g : genres) {
+            if (!this.categoriaService.existsByNombre(g)) {
+                Categoria c = new Categoria();
+                c.setNombre(g);
+                generos.add(this.categoriaService.createCategoria(c));
+            } else {
+                generos.add(this.categoriaService.getCategoriasByNombre(g).get(0));
+            }
+
+        }
+        List<Genero> listaGenero = new ArrayList<>();
+        for (Categoria cat : generos) {
+            Genero genero = new Genero();
+            genero.setCategoria(cat);
+            genero.setArtista(artista);
+            listaGenero.add(genero);
+        }
+        artista.setGeneros(listaGenero);
         artista.setRoll(Roles.ARTISTA.toString());
         artista.setCuentaExpirada(false);
         artista.setCuentaBloqueada(false);
@@ -60,6 +93,7 @@ public class ArtistaService {
         artistaExistente.setPassword(artista.getPassword());
         artistaExistente.setUsername(artista.getUsername());
         artistaExistente.setIdArtistaSpoti(artista.getIdArtistaSpoti());
+        artistaExistente.setGeneros(artista.getGeneros());
 
         return this.artistaCrudRepository.save(artistaExistente);
     }
@@ -112,6 +146,5 @@ public class ArtistaService {
         return this.artistaCrudRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("No existe un artista con el username: " + username));
     }
-    
 
 }

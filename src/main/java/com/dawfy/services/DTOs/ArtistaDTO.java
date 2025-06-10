@@ -1,6 +1,7 @@
 package com.dawfy.services.DTOs;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class ArtistaDTO {
     private String pais;
     private String foto;
     private String idArtistaSpoti;
+    private Set<String> categorias;
 }
