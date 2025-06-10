@@ -196,4 +196,14 @@ public class ArtistaController {
         this.artistaService.deleteArtista(idArtista);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<List<ArtistaDTO>> getArtistasByCategoria(@PathVariable String categoria) {
+        List<Artista> artistas = this.artistaService.artistasByCategoria(categoria);
+        List<ArtistaDTO> artistasDTO = new ArrayList<>();
+        for (Artista artista : artistas) {
+            artistasDTO.add(ArtistaDTOMapper.mapper(artista));
+        }
+        return ResponseEntity.ok(artistasDTO);
+    }
 }

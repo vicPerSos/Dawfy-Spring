@@ -17,7 +17,17 @@ public interface ArtistaCrudRepository extends CrudRepository<Artista, Integer> 
     Optional<Artista> findByCorreo(String correo);
 
     List<Artista> findByFechaNacimiento(LocalDate fechaNacimiento);
+
     List<Artista> findByNombreStartingWithIgnoreCase(String nombre);
+
+    @Query("""
+            SELECT DISTINCT a
+            FROM Artista a
+            JOIN a.generos g
+            JOIN g.categoria c
+            WHERE LOWER(c.nombre) LIKE LOWER(CONCAT('%', :nombreCategoria, '%'))
+            """)
+    List<Artista> findArtistasByCategoriaNombre(@Param("nombreCategoria") String nombreCategoria);
 
     Optional<Artista> findByUsername(String username);
 }

@@ -71,7 +71,7 @@ public class AlbumController {
         String username = authentication.getName();
         Artista artista = this.artistaService.artistaByUsername(username);
 
-        List<Album> albumes = this.albumService.getAlbumsByArtistaUsername(artista.getNombre());
+        List<Album> albumes = this.albumService.getAlbumsByArtistaUsername(artista.getUsername());
         List<AlbumDTO> albums = new ArrayList<>();
         for (Album album : albumes) {
             albums.add(AlbumDTOMapper.toDTO(album));
