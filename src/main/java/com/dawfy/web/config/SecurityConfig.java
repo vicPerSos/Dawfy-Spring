@@ -69,28 +69,32 @@ public class SecurityConfig {
                                                                 "/cancion/**",
                                                                 "/categoria/**",
                                                                 "/colaboracion/**",
-                                                                "/search/**")
+                                                                "/search/**",
+                                                                "/categoria/**")
                                                 .authenticated()
                                                 .requestMatchers(HttpMethod.POST,
                                                                 "/artista/**",
                                                                 "/albums/**",
                                                                 "/cancion/**",
                                                                 "/categoria/**",
-                                                                "/colaboracion/**")
+                                                                "/colaboracion/**",
+                                                                "/categoria/**")
                                                 .hasAuthority(Roles.ARTISTA.name())
                                                 .requestMatchers(HttpMethod.PUT,
                                                                 "/artista/**",
                                                                 "/albums/**",
                                                                 "/cancion/**",
                                                                 "/categoria/**",
-                                                                "/colaboracion/**")
+                                                                "/colaboracion/**",
+                                                                "/categoria/**")
                                                 .hasAuthority(Roles.ARTISTA.name())
                                                 .requestMatchers(HttpMethod.DELETE,
                                                                 "/artista/**",
                                                                 "/albums/**",
                                                                 "/cancion/**",
                                                                 "/categoria/**",
-                                                                "/colaboracion/**")
+                                                                "/colaboracion/**",
+                                                                "/categoria/**")
                                                 .hasAuthority(Roles.ARTISTA.name())
                                                 .anyRequest().hasAuthority(Roles.ADMIN.name())) // Catch-all para ADMIN
                                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

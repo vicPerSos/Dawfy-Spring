@@ -28,4 +28,8 @@ public class CategoriaService {
         return this.categoriaCrudRepository.save(categoria);
     }
 
+    public List<Categoria> getAllCategorias() {
+        return (List<Categoria>) this.categoriaCrudRepository.findAll();
+    }
+
 }
